@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<OpenSearchDescription xmlns="http://a9.com/-/spec/opensearch/1.1/">
+  <ShortName>Aegis Search</ShortName>
+  <Description>High-performance, zero-tracking, private search engine</Description>
+  <Tags>privacy zero-logs search</Tags>
+  <Contact>support@aegis.local</Contact>
+  <Url type="text/html" template="http://localhost:3000/?q={searchTerms}"/>
+  <Url type="application/x-suggestions+json" template="http://localhost:3000/api/suggest?q={searchTerms}"/>
+  <InputEncoding>UTF-8</InputEncoding>
+  <OutputEncoding>UTF-8</OutputEncoding>
+  <Image width="16" height="16" type="image/x-icon">http://localhost:3000/favicon.ico</Image>
+</OpenSearchDescription>

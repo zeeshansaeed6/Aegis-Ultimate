@@ -1,0 +1,90 @@
+{
+  "savedAt": "2026-09-15T04:28:04.477Z",
+  "documents": [
+    [
+      "https://aegis-search.internal/docs/architecture",
+      {
+        "id": "native_8t0rx4u",
+        "url": "https://aegis-search.internal/docs/architecture",
+        "domain": "aegis-search.internal",
+        "title": "Aegis Search Engine Architecture & Design",
+        "description": "Complete architecture of Aegis: self-hosted web crawler, BM25 ranking algorithm, and zero-telemetry RAM processing.",
+        "headings": [
+          "Engine Architecture",
+          "BM25 Scoring Algorithm",
+          "Web Crawler Pipeline"
+        ],
+        "bodySnippet": "Aegis Search Ultimate is an autonomous, private search engine. It features an integrated autonomous web crawler with rate-limiting, an in-memory inverted index, and dynamic sentence snippet extraction with PageRank link graph scoring.",
+        "wordCount": 32,
+        "docLength": 49,
+        "favicon": "",
+        "crawledAt": "2026-09-15T04:28:04.476Z",
+        "outgoingLinks": []
+      }
+    ],
+    [
+      "https://expressjs.com/en/guide/routing.html",
+      {
+        "id": "native_rv09gsb",
+        "url": "https://expressjs.com/en/guide/routing.html",
+        "domain": "expressjs.com",
+        "title": "Express.js Routing and Middleware Guide",
+        "description": "Routing refers to determining how an application responds to a client request to a particular endpoint, which is a URI and a specific HTTP method.",
+        "headings": [
+          "Basic Routing",
+          "Route Methods",
+          "Middleware Functions"
+        ],
+        "bodySnippet": "Routing refers to how an application responds to a client request to a particular endpoint with an HTTP method (GET, POST, etc.) and a path. Middleware functions have access to the request object (req), the response object (res), and the next middleware function.",
+        "wordCount": 43,
+        "docLength": 50,
+        "favicon": "",
+        "crawledAt": "2026-09-15T04:28:04.477Z",
+        "outgoingLinks": []
+      }
+    ],
+    [
+      "https://developer.mozilla.org/en-US/docs/Web/Privacy",
+      {
+        "id": "native_ss51zvn",
+        "url": "https://developer.mozilla.org/en-US/docs/Web/Privacy",
+        "domain": "developer.mozilla.org",
+        "title": "MDN Web Docs: Privacy and Security in Web Applications",
+        "description": "Web application privacy practices, Referrer-Policy suppression, tracking prevention, Content Security Policy, and user data isolation.",
+        "headings": [
+          "Privacy Principles",
+          "Referrer Policy",
+          "Tracking Protections"
+        ],
+        "bodySnippet": "Privacy on the web is paramount. Key defenses include strict Referrer-Policy: no-referrer, sanitizing URL parameters to remove tracking beacons (utm_source, fbclid, gclid), sandboxed iframe execution, and client-side encryption via the Web Cryptography API.",
+        "wordCount": 33,
+        "docLength": 54,
+        "favicon": "",
+        "crawledAt": "2026-09-15T04:28:04.477Z",
+        "outgoingLinks": []
+      }
+    ],
+    [
+      "https://doc.rust-lang.org/book/ch01-01-installation.html",
+      {
+        "id": "native_74drszw",
+        "url": "https://doc.rust-lang.org/book/ch01-01-installation.html",
+        "domain": "doc.rust-lang.org",
+        "title": "The Rust Programming Language: Getting Started and Safety",
+        "description": "Rust is a systems programming language that provides memory safety without garbage collection, concurrency without data races, and zero-cost abstractions.",
+        "headings": [
+          "Why Rust?",
+          "Memory Safety Guarantees",
+          "Ownership and Borrowing"
+        ],
+        "bodySnippet": "Rust empowers developers to build reliable and efficient software. By enforcing strict ownership and borrowing rules at compile time, Rust eliminates null pointer dereferences, buffer overflows, and concurrency races before runtime.",
+        "wordCount": 31,
+        "docLength": 52,
+        "favicon": "",
+        "crawledAt": "2026-09-15T04:28:04.477Z",
+        "outgoingLinks": []
+      }
+    ]
+  ],
+  "inboundLinks": []
+}

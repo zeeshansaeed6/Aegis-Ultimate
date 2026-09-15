@@ -1,0 +1,34 @@
+{
+  "name": "aegis-private-search",
+  "version": "1.0.0",
+  "description": "Aegis Private Search Engine - High-performance, zero-tracking, self-hosted search engine with proxy reader and local BM25 vault.",
+  "main": "server/server.js",
+  "scripts": {
+    "start": "electron electron/main.js",
+    "app": "electron electron/main.js",
+    "server": "node server/server.js",
+    "dev": "node --watch server/server.js",
+    "test": "node test/test_engine.js && node test/test_http.js && node test/test_native_engine.js && node test/test_browser_proxy.js && node test/test_google_parity.js && node test/test_links_navigation.js && node test/test_images_and_auth.js && node test/test_flagship_suite.js && node test/test_split_and_summarizer.js && node test/test_time_machine_and_highlighter.js"
+  },
+  "keywords": [
+    "search",
+    "privacy",
+    "zero-logs",
+    "bm25",
+    "proxy"
+  ],
+  "author": "Zeeshan Saeed",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/zeeshansaeed6/Aegis-Ultimate.git"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "cheerio": "^1.0.0",
+    "cors": "^2.8.5",
+    "express": "^4.21.2"
+  },
+  "devDependencies": {
+    "electron": "^44.3.0"
+  }
+}

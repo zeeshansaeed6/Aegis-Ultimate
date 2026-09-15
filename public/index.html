@@ -1,0 +1,2171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Aegis Search - Ultimate Private Search Engine with Kagi-style focus lenses, Perplexity AI synthesis, Privacy Lab auditor, research scratchpad, and EXIF scrubber.">
+  <title>Aegis Search | Ultimate Private & Anonymous Search Engine</title>
+  
+  <!-- OpenSearch 1.1 Auto-Discovery Link -->
+  <link rel="search" type="application/opensearchdescription+xml" title="Aegis Search" href="/opensearch.xml">
+
+  <!-- Progressive Web App & Standalone Desktop Manifest -->
+  <link rel="manifest" href="/manifest.webmanifest">
+  <meta name="theme-color" content="#0b0f19">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Aegis Search">
+  <meta name="author" content="Zeeshan Saeed">
+  <meta property="og:title" content="Aegis Private Search Engine — Created by Zeeshan Saeed">
+  <meta property="og:description" content="High-performance, zero-telemetry private search engine and sandboxed browser created by Zeeshan Saeed. The privacy-first alternative to Google.">
+  <meta property="og:type" content="website">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Aegis Private Search Engine | Zeeshan Saeed">
+  <meta name="twitter:description" content="High-performance, zero-tracking private search engine and browser suite engineered by Zeeshan Saeed.">
+
+  <!-- Schema.org JSON-LD for Google Search & Knowledge Graph -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": "Aegis Private Search Engine",
+    "alternateName": ["Aegis Browser", "Aegis Search"],
+    "operatingSystem": "Windows, macOS, Linux, Web",
+    "applicationCategory": "BrowserApplication, SearchEngine",
+    "description": "Aegis is an autonomous, open-source private search engine and browser created by Zeeshan Saeed featuring zero telemetry, BM25 ranking, and an isolated streaming proxy browser.",
+    "author": {
+      "@type": "Person",
+      "name": "Zeeshan Saeed"
+    },
+    "creator": {
+      "@type": "Person",
+      "name": "Zeeshan Saeed"
+    },
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "USD"
+    }
+  }
+  </script>
+
+  <!-- Modern Typography from Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Outfit:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  
+  <link rel="stylesheet" href="styles.css">
+  <link rel="icon" type="image/png" href="/favicon.png">
+  <link rel="apple-touch-icon" href="/app-icon.png">
+</head>
+<body class="theme-dark">
+  <!-- Desktop App Native Titlebar (Visible when running in Electron desktop mode) -->
+  <div class="desktop-titlebar" id="desktopTitlebar" style="display: none;">
+    <div class="desktop-titlebar-drag">
+      <div class="desktop-titlebar-brand">
+        <img src="/app-icon.png" class="desktop-titlebar-icon" alt="" width="16" height="16">
+        <span class="desktop-brand-title">Aegis Ultimate &bull; Sovereign Browser & Search</span>
+      </div>
+    </div>
+    <div class="desktop-titlebar-controls">
+      <button type="button" class="desktop-win-btn" id="btnDesktopMinimize" title="Minimize Window" aria-label="Minimize">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"/></svg>
+      </button>
+      <button type="button" class="desktop-win-btn" id="btnDesktopMaximize" title="Maximize Window" aria-label="Maximize">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="5" y="5" width="14" height="14" rx="2"/></svg>
+      </button>
+      <button type="button" class="desktop-win-btn desktop-win-close" id="btnDesktopClose" title="Close Window" aria-label="Close">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+    </div>
+  </div>
+
+  <!-- Ambient background glow elements -->
+  <div class="ambient-glow glow-top" aria-hidden="true"></div>
+  <div class="ambient-glow glow-bottom" aria-hidden="true"></div>
+
+  <!-- Header Navigation -->
+  <header class="app-header" id="appHeader">
+    <div class="header-container">
+      <div class="brand-group" id="brandGroup">
+        <a href="/" class="brand-link" id="brandLogo" aria-label="Aegis Search Home">
+          <div class="brand-shield-icon">
+            <img src="/app-icon.png" class="brand-logo-img" alt="Aegis Ultimate Logo">
+          </div>
+          <div class="brand-text">
+            <span class="brand-name">AEGIS</span>
+            <span class="brand-tag">ULTIMATE</span>
+          </div>
+        </a>
+      </div>
+
+      <!-- Live Privacy Shield HUD & Header Controls -->
+      <div class="header-actions">
+        <!-- Install Desktop Application Button (PWA) -->
+        <button class="icon-btn btn-install-pwa" id="btnInstallPwa" title="Install Standalone Desktop Application" style="display: none;">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          <span class="btn-text-badge">Install App</span>
+        </button>
+
+        <button class="privacy-hud-pill" id="btnPrivacyLabToggle" title="Open Live Privacy Lab & Fingerprint Auditor">
+          <span class="pulse-indicator"></span>
+          <span class="hud-label">Privacy Lab: <strong>AUDIT</strong></span>
+          <span class="hud-stat" id="hudTrackersCount">0 blocked</span>
+        </button>
+
+        <button class="icon-btn" id="btnScratchpadToggle" title="Research Scratchpad & Markdown Compiler (Alt+N)" aria-label="Open Scratchpad">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M12 20h9"/>
+            <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/>
+          </svg>
+          <span class="btn-text-badge">Notes</span>
+        </button>
+
+        <button class="icon-btn" id="btnVaultToggle" title="Local Document Vault (BM25)" aria-label="Open Document Vault">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+            <polyline points="14 2 14 8 20 8"/>
+            <line x1="16" y1="13" x2="8" y2="13"/>
+            <line x1="16" y1="17" x2="8" y2="17"/>
+          </svg>
+          <span class="btn-text-badge">Vault</span>
+        </button>
+
+        <button class="icon-btn" id="btnCrawlerStudioToggle" title="Spider & Inverted Index Studio (Ctrl+Shift+C)" aria-label="Open Crawler Studio">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="9"/>
+            <path d="M12 3v18"/>
+            <path d="M3 12h18"/>
+            <circle cx="12" cy="12" r="4"/>
+          </svg>
+          <span class="btn-text-badge">Crawler</span>
+        </button>
+
+        <button class="icon-btn" id="btnBrowserToggle" title="Aegis Sandboxed Private Browser (Ctrl+Shift+B)" aria-label="Open Private Browser">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <rect x="2" y="3" width="20" height="18" rx="3" ry="3"/>
+            <line x1="2" y1="9" x2="22" y2="9"/>
+            <circle cx="6" cy="6" r="1"/>
+            <circle cx="10" cy="6" r="1"/>
+          </svg>
+          <span class="btn-text-badge">Browser</span>
+        </button>
+
+        <button class="icon-btn" id="btnSettingsToggle" title="Aegis Engine Settings (AI, Lenses, Tor, Spam, Backup)" aria-label="Open Settings">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="3"/>
+            <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/>
+          </svg>
+          <span class="btn-text-badge">Settings</span>
+        </button>
+
+        <button class="icon-btn" id="btnShortcuts" title="Keyboard Shortcuts (?)" aria-label="Keyboard Shortcuts">
+          <kbd class="shortcut-key">?</kbd>
+        </button>
+
+        <button class="icon-btn btn-danger" id="btnPanicWipe" title="Panic Button: Wipe all local history & cache (Ctrl+Shift+X)" aria-label="Wipe Local Data">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="3 6 5 6 21 6"/>
+            <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>
+            <line x1="10" y1="11" x2="10" y2="17"/>
+            <line x1="14" y1="11" x2="14" y2="17"/>
+          </svg>
+          <span class="btn-text-badge">Wipe</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Application Container -->
+  <main class="main-content" id="mainContent">
+    <!-- Hero / Search Section -->
+    <section class="search-hero" id="searchHero">
+      <div class="hero-center-box" id="heroCenterBox">
+        <div class="hero-brand-emblem-wrap">
+          <img src="/brand-logo.png" class="hero-brand-emblem" alt="Aegis Ultimate Emblem">
+        </div>
+        <div class="hero-minimal-badge" id="heroBadge">
+          <span class="hero-badge-pulse"></span>
+          <span>ZERO-TELEMETRY &bull; SOVEREIGN SEARCH</span>
+        </div>
+
+        <h1 class="hero-title" id="heroTitle">
+          Search the web <span class="gradient-text">without compromise</span>
+        </h1>
+        <p class="hero-subtitle">
+          Pure zero-tracking search engine &bull; Perplexity-style AI &bull; Isolated streaming proxy
+        </p>
+
+        <!-- Search Bar Form -->
+        <form class="search-form-wrapper" id="searchForm" role="search">
+          <div class="search-bar-container">
+            <!-- Focus Lens Selector Pill -->
+            <div class="lens-selector-wrapper" id="lensSelectorWrapper">
+              <button type="button" class="lens-active-btn" id="btnActiveLens" title="Change Focus Lens">
+                <span id="activeLensIcon">🌐</span>
+                <span id="activeLensName">All Web</span>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+              </button>
+
+              <!-- Lens Dropdown Menu -->
+              <div class="lens-dropdown-menu" id="lensDropdownMenu" style="display: none;">
+                <div class="lens-dropdown-header">Focus Lenses (Kagi-Style)</div>
+                <div class="lens-option active" data-lens="all">
+                  <span class="lens-icon">🌐</span>
+                  <div class="lens-details">
+                    <strong>All Web</strong>
+                    <small>Default open web meta-search</small>
+                  </div>
+                </div>
+                <div class="lens-option" data-lens="discussions">
+                  <span class="lens-icon">💬</span>
+                  <div class="lens-details">
+                    <strong>Discussions & Forums</strong>
+                    <small>Hacker News, Reddit, Lobste.rs, StackExchange</small>
+                  </div>
+                </div>
+                <div class="lens-option" data-lens="developer">
+                  <span class="lens-icon">💻</span>
+                  <div class="lens-details">
+                    <strong>Developer & Code</strong>
+                    <small>GitHub, StackOverflow, MDN, DevDocs, PyPI, Crates</small>
+                  </div>
+                </div>
+                <div class="lens-option" data-lens="packages">
+                  <span class="lens-icon">📦</span>
+                  <div class="lens-details">
+                    <strong>Software Packages</strong>
+                    <small>PyPI, npm, Crates.io, pkg.go.dev, RubyGems</small>
+                  </div>
+                </div>
+                <div class="lens-option" data-lens="academic">
+                  <span class="lens-icon">🧪</span>
+                  <div class="lens-details">
+                    <strong>Academic & Papers</strong>
+                    <small>arXiv, PubMed, JSTOR, Nature, Semantic Scholar</small>
+                  </div>
+                </div>
+                <div class="lens-option" data-lens="books">
+                  <span class="lens-icon">📚</span>
+                  <div class="lens-details">
+                    <strong>Books & Literature</strong>
+                    <small>Project Gutenberg, OpenLibrary, Standard Ebooks</small>
+                  </div>
+                </div>
+                <div class="lens-option" data-lens="crypto">
+                  <span class="lens-icon">🔒</span>
+                  <div class="lens-details">
+                    <strong>Privacy & Security</strong>
+                    <small>PrivacyGuides, EFF, Tor Project, Schneier, Krebs</small>
+                  </div>
+                </div>
+                <div class="lens-option" data-lens="news">
+                  <span class="lens-icon">📰</span>
+                  <div class="lens-details">
+                    <strong>Independent News</strong>
+                    <small>Reuters, AP, ProPublica, The Intercept, BBC</small>
+                  </div>
+                </div>
+                <div class="lens-option" data-lens="design">
+                  <span class="lens-icon">🎨</span>
+                  <div class="lens-details">
+                    <strong>UI/UX & Design</strong>
+                    <small>Dribbble, Behance, Figma, Mobbin, Godly, UI Garage</small>
+                  </div>
+                </div>
+                <div class="lens-option" data-lens="finance">
+                  <span class="lens-icon">📈</span>
+                  <div class="lens-details">
+                    <strong>Markets & Finance</strong>
+                    <small>Reuters, Bloomberg, FT, SEC EDGAR, TradingView</small>
+                  </div>
+                </div>
+                <div class="lens-option" data-lens="foss">
+                  <span class="lens-icon">🛡️</span>
+                  <div class="lens-details">
+                    <strong>FOSS & Alternatives</strong>
+                    <small>PrivacyGuides, AlternativeTo, F-Droid, Codeberg</small>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <input 
+              type="text" 
+              class="search-input" 
+              id="searchInput" 
+              name="q" 
+              placeholder="Search privately, query AI, or use a bang (!w, !gh, !onion, !doc)..." 
+              autocomplete="off" 
+              spellcheck="false" 
+              aria-label="Search query"
+              autofocus
+            >
+
+            <!-- Inline Clear Button (only shown when input has text) -->
+            <button type="button" class="action-btn-clean btn-input-clear" id="btnClearSearch" title="Clear input (Esc)" aria-label="Clear Search Input" style="display: none;">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                <line x1="18" y1="6" x2="6" y2="18"/>
+                <line x1="6" y1="6" x2="18" y2="18"/>
+              </svg>
+            </button>
+
+            <div class="search-input-actions">
+              <!-- Visual Lens / EXIF Button -->
+              <button type="button" class="action-btn-clean" id="btnImageLens" title="Visual Search Lens & EXIF Scrubber" aria-label="Image Lens">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/>
+                  <circle cx="12" cy="13" r="4"/>
+                </svg>
+              </button>
+
+              <!-- Voice Search Button -->
+              <button type="button" class="action-btn-clean" id="btnVoiceSearch" title="Voice Search (Web Speech API)" aria-label="Voice Search">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/>
+                  <path d="M19 10v2a7 7 0 0 1-14 0v-2"/>
+                  <line x1="12" y1="19" x2="12" y2="23"/>
+                  <line x1="8" y1="23" x2="16" y2="23"/>
+                </svg>
+              </button>
+
+              <!-- AI Synthesis Toggle -->
+              <button type="button" class="action-btn-ai" id="btnToggleAi" title="Toggle Perplexity-style AI Synthesis" aria-pressed="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
+                </svg>
+                <span>AI</span>
+              </button>
+
+              <!-- Deep Research Toggle -->
+              <button type="button" class="action-btn-ai action-btn-deep" id="btnToggleDeepResearch" title="Deep Research Mode (Perplexity Pro Multi-Vector Synthesis)" aria-pressed="false">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/>
+                  <polyline points="3.27 6.96 12 12.01 20.73 6.96"/>
+                  <line x1="12" y1="22.08" x2="12" y2="12"/>
+                </svg>
+                <span>Deep</span>
+              </button>
+
+              <!-- Command Palette Hotkey Pill -->
+              <button type="button" class="cmd-palette-hotkey-btn" id="btnOpenCommandPalette" title="Open Command Palette (Ctrl+K)">
+                <span>Ctrl K</span>
+              </button>
+
+              <button type="submit" class="search-submit-btn" id="btnSubmitSearch" aria-label="Execute Search">
+                <span>Search</span>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+                  <line x1="5" y1="12" x2="19" y2="12"/>
+                  <polyline points="12 5 19 12 12 19"/>
+                </svg>
+              </button>
+            </div>
+          </div>
+
+          <!-- Autocomplete / Suggestions Dropdown -->
+          <div class="suggestions-dropdown" id="suggestionsDropdown" style="display: none;" role="listbox"></div>
+        </form>
+
+        <!-- Popular Bang Quick-Pills (Minimalist single row) -->
+        <div class="quick-bangs-row" id="quickBangsRow">
+          <span class="bangs-label">Quick:</span>
+          <button type="button" class="bang-chip" data-bang="!w "><strong>!w</strong> Wikipedia</button>
+          <button type="button" class="bang-chip" data-bang="!gh "><strong>!gh</strong> GitHub</button>
+          <button type="button" class="bang-chip" data-bang="!hn "><strong>!hn</strong> HackerNews</button>
+          <button type="button" class="bang-chip" data-bang="!pypi "><strong>!pypi</strong> PyPI</button>
+          <button type="button" class="bang-chip" data-bang="!doc "><strong>!doc</strong> Vault</button>
+          <button type="button" class="bang-chip" data-bang="!onion "><strong>!onion</strong> Tor</button>
+          <button type="button" class="bang-chip" data-bang="calc: 1024 * 768"><strong>calc:</strong> Math</button>
+          <button type="button" class="bang-chip" data-bang="sha256: secret"><strong>sha256:</strong> Hash</button>
+          <button type="button" class="bang-chip" data-bang="password 20"><strong>pw:</strong> Pass</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Results Section (Visible when search is executed) -->
+    <section class="results-container" id="resultsSection" style="display: none;">
+      <!-- Category Tabs Bar -->
+      <nav class="categories-bar" id="categoriesBar" aria-label="Search categories">
+        <button class="category-tab active" data-category="all" id="tabCatAll">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          All
+        </button>
+        <button class="category-tab" data-category="images" id="tabCatImages">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+          Images
+        </button>
+        <button class="category-tab" data-category="videos" id="tabCatVideos">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2" ry="2"/></svg>
+          Videos
+        </button>
+        <button class="category-tab" data-category="discussions" id="tabCatDiscussions">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+          Discussions
+        </button>
+        <button class="category-tab" data-category="packages" id="tabCatPackages">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16.5 9.4 7.55 4.24a1.78 1.78 0 0 0-2.5 1.56v12.4a1.78 1.78 0 0 0 2.5 1.56l8.95-5.16a1.78 1.78 0 0 0 0-3.08z"/><polyline points="3.29 7 12 12 20.71 7"/></svg>
+          Packages
+        </button>
+        <button class="category-tab" data-category="papers" id="tabCatPapers">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1-2.5-2.5Z"/><path d="M6 6h10"/><path d="M6 10h10"/></svg>
+          Papers
+        </button>
+        <button class="category-tab" data-category="tech" id="tabCatTech">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+          Tech & Code
+        </button>
+        <button class="category-tab" data-category="local" id="tabCatLocal">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+          Local Vault
+        </button>
+        <button class="category-tab" data-category="onion" id="tabCatOnion">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+          Tor (.onion)
+        </button>
+        <button class="category-tab" data-category="own" id="tabCatNative" title="Query purely local native inverted index">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 3v18"/><path d="M3 12h18"/><circle cx="12" cy="12" r="4"/></svg>
+          🕸️ Own Engine
+        </button>
+      </nav>
+
+      <!-- Power Search Filters Row (Date, Filetype, Region, SafeSearch) -->
+      <div class="power-filters-bar" id="powerFiltersBar">
+        <div class="filter-group">
+          <span class="filter-group-label">Date:</span>
+          <button type="button" class="filter-chip active" data-time="">Any time</button>
+          <button type="button" class="filter-chip" data-time="d">Past 24h</button>
+          <button type="button" class="filter-chip" data-time="w">Past week</button>
+          <button type="button" class="filter-chip" data-time="m">Past month</button>
+          <button type="button" class="filter-chip" data-time="y">Past year</button>
+        </div>
+
+        <div class="filter-group">
+          <span class="filter-group-label">Filetype:</span>
+          <button type="button" class="filter-chip active" data-filetype="">All files</button>
+          <button type="button" class="filter-chip" data-filetype="pdf">PDF</button>
+          <button type="button" class="filter-chip" data-filetype="epub">EPUB</button>
+          <button type="button" class="filter-chip" data-filetype="doc">DOCX</button>
+          <button type="button" class="filter-chip" data-filetype="csv">CSV</button>
+          <button type="button" class="filter-chip" data-filetype="json">JSON</button>
+        </div>
+
+        <div class="filter-group">
+          <span class="filter-group-label">Region:</span>
+          <button type="button" class="filter-chip active" data-region="">Worldwide</button>
+          <button type="button" class="filter-chip" data-region="us-en">🇺🇸 US</button>
+          <button type="button" class="filter-chip" data-region="eu-en">🇪🇺 EU</button>
+          <button type="button" class="filter-chip" data-region="uk-en">🇬🇧 UK</button>
+          <button type="button" class="filter-chip" data-region="jp-jp">🇯🇵 JP</button>
+        </div>
+
+        <div class="filter-group">
+          <span class="filter-group-label">SafeSearch:</span>
+          <button type="button" class="filter-chip active" data-safesearch="-1">Moderate</button>
+          <button type="button" class="filter-chip" data-safesearch="1">Strict</button>
+          <button type="button" class="filter-chip" data-safesearch="-2">Off</button>
+        </div>
+      </div>
+
+      <!-- Search Meta Status Line -->
+      <div class="results-meta-row" id="resultsMetaRow">
+        <span class="results-count-text" id="resultsCountText">Searching...</span>
+        <div class="results-meta-actions">
+          <!-- Research Dossier Exporter Menu -->
+          <div class="dossier-dropdown-wrapper" id="dossierDropdownWrapper">
+            <button type="button" class="btn-dossier-export" id="btnDossierExport" title="Export current search results dossier">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="13" height="13">
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/>
+              </svg>
+              <span>Export Dossier</span>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="10" height="10"><polyline points="6 9 12 15 18 9"/></svg>
+            </button>
+            <div class="dossier-menu" id="dossierMenu" style="display: none;">
+              <button type="button" class="dossier-opt" id="btnExportMarkdown">
+                <span>📝</span> Markdown Report (.md)
+              </button>
+              <button type="button" class="dossier-opt" id="btnExportJson">
+                <span>📋</span> Raw JSON Data (.json)
+              </button>
+              <button type="button" class="dossier-opt" id="btnExportCsv">
+                <span>📊</span> Spreadsheet CSV (.csv)
+              </button>
+              <button type="button" class="dossier-opt" id="btnCopyMarkdownLinks">
+                <span>🔗</span> Copy Formatted Links
+              </button>
+            </div>
+          </div>
+
+          <div class="results-privacy-badge" id="resultsPrivacyBadge">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+            <span>Referrer Suppressed • Trackers Purged • IP Hidden</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Results Grid / Layout: Main Results Column + Google Knowledge Graph Sidebar -->
+      <div class="results-layout-wrapper" id="resultsLayoutWrapper">
+        <div class="results-main-column" id="resultsMainColumn">
+          <!-- AI Synthesizer Card Container (Perplexity-Style) -->
+          <div class="ai-synthesis-container" id="aiSynthesisContainer" style="display: none;"></div>
+
+          <!-- Deep Research Dossier Container (Perplexity Pro Multi-Angle Agent) -->
+          <div class="deep-research-container" id="deepResearchContainer" style="display: none;"></div>
+
+          <!-- Instant Answer Card Container (Interactive Calculator, Converter, Weather, Dictionary, etc.) -->
+          <div class="instant-answer-container" id="instantAnswerContainer" style="display: none;"></div>
+
+          <!-- Loading State Skeleton -->
+          <div class="results-loading-skeleton" id="resultsSkeleton" style="display: none;">
+            <div class="skeleton-card"></div>
+            <div class="skeleton-card"></div>
+            <div class="skeleton-card"></div>
+          </div>
+
+          <!-- Results Feed List -->
+          <div class="results-feed" id="resultsFeed" role="region" aria-live="polite"></div>
+
+          <!-- Masonry Image Grid -->
+          <div class="image-results-grid" id="imageResultsGrid" style="display: none;"></div>
+
+          <!-- Video Results Grid -->
+          <div class="video-results-grid" id="videoResultsGrid" style="display: none;"></div>
+        </div>
+
+        <!-- Google-Style Knowledge Graph Sidebar Panel -->
+        <aside class="knowledge-graph-sidebar" id="knowledgeGraphSidebar" style="display: none;"></aside>
+      </div>
+    </section>
+  </main>
+
+  <!-- Anonymous Proxy Reader Modal -->
+  <div class="modal-backdrop" id="readerModalBackdrop" style="display: none;">
+    <div class="reader-modal-card" id="readerModalCard" role="dialog" aria-modal="true" aria-labelledby="readerModalTitle">
+      <div class="reader-modal-header">
+        <div class="reader-meta-tags">
+          <span class="badge-tag reader-secure-badge">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+            Sandbox Reader Mode
+          </span>
+          <span class="badge-tag" id="readerTrackersCount">0 scripts stripped</span>
+          <span class="badge-tag" id="readerReadingTime">2 min read</span>
+        </div>
+        <div class="reader-modal-actions">
+          <button type="button" class="icon-btn-text" id="btnReaderSpeak" title="Listen to text (Speech Synthesis)">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" width="13" height="13"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"/></svg>
+            <span>Listen</span>
+          </button>
+
+          <!-- Reading Themes -->
+          <div class="reader-theme-selector" id="readerThemeSelector">
+            <button type="button" class="reader-theme-btn active" data-theme="dark" title="Dark Obsidian theme">A</button>
+            <button type="button" class="reader-theme-btn theme-sepia-btn" data-theme="sepia" title="Warm Sepia theme">A</button>
+            <button type="button" class="reader-theme-btn theme-paper-btn" data-theme="paper" title="Paper White theme">A</button>
+          </div>
+
+          <!-- Font Size Adjuster -->
+          <div class="reader-font-controls">
+            <button type="button" class="reader-font-btn" id="btnReaderFontSmaller" title="Smaller text">A-</button>
+            <button type="button" class="reader-font-btn" id="btnReaderFontBigger" title="Larger text">A+</button>
+          </div>
+
+          <button type="button" class="icon-btn-text" id="btnClipReaderToNotes" title="Clip full reader text into Scratchpad">
+            <span>Clip to Notes</span>
+          </button>
+          <a href="#" target="_blank" rel="noopener noreferrer" class="icon-btn-text" id="readerDirectLink" title="Visit Direct Sanitized URL">
+            <span>Direct Link</span>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+          </a>
+          <button class="icon-btn" id="btnReaderPrint" title="Print / Save Clean PDF" aria-label="Print Document">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
+          </button>
+          <button class="icon-btn" id="btnCloseReader" title="Close Reader (Esc)" aria-label="Close Reader">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+          </button>
+        </div>
+      </div>
+
+      <div class="reader-content-scrollable" id="readerContentScrollable">
+        <h2 class="reader-doc-title" id="readerModalTitle">Loading Document...</h2>
+        <div class="reader-doc-byline" id="readerDocByline"></div>
+        <hr class="reader-divider">
+        <div class="reader-doc-body" id="readerModalBody">
+          <div class="skeleton-card" style="height: 200px;"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Research Scratchpad & Markdown Compiler Drawer -->
+  <aside class="scratchpad-drawer" id="scratchpadDrawer" style="display: none;" aria-label="Research Scratchpad">
+    <div class="scratchpad-header">
+      <div class="scratchpad-title-group">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+        <h2>Research Scratchpad</h2>
+      </div>
+      <div class="scratchpad-actions-top">
+        <button type="button" class="btn-action-pill" id="btnScratchpadSyncHighlights" title="Sync all web & reader highlights into notes" style="color: #10b981; border-color: rgba(16, 185, 129, 0.3);">✨ Highlights</button>
+        <button type="button" class="btn-action-pill" id="btnScratchpadToVault" title="Save this note into BM25 Local Vault">Index to Vault</button>
+        <button type="button" class="btn-action-pill" id="btnExportMarkdownNote" title="Download .md file">Export .md</button>
+        <button class="icon-btn" id="btnCloseScratchpad" title="Close Scratchpad" aria-label="Close Scratchpad">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- Scratchpad Split View -->
+    <div class="scratchpad-split-container">
+      <div class="scratchpad-editor-pane">
+        <div class="editor-toolbar">
+          <button type="button" class="tool-btn" data-insert="**bold**" title="Bold"><strong>B</strong></button>
+          <button type="button" class="tool-btn" data-insert="*italic*" title="Italic"><em>I</em></button>
+          <button type="button" class="tool-btn" data-insert="### Heading" title="Heading">H</button>
+          <button type="button" class="tool-btn" data-insert="- List item" title="List">• List</button>
+          <button type="button" class="tool-btn" data-insert="```js&#10;// code&#10;```" title="Code Block">&lt;/&gt;</button>
+          <button type="button" class="tool-btn" data-insert="> Quote" title="Quote">&ldquo;</button>
+          <span class="editor-stats" id="scratchpadStats">0 words</span>
+        </div>
+        <textarea id="scratchpadTextarea" class="scratchpad-textarea" placeholder="# Research Notes&#10;&#10;Start typing or click 'Clip to Notes' on any search result..."></textarea>
+      </div>
+
+      <div class="scratchpad-preview-pane">
+        <div class="preview-header">Live Preview</div>
+        <div class="scratchpad-preview-body" id="scratchpadPreviewBody">
+          <p class="preview-placeholder">Live preview will render here...</p>
+        </div>
+      </div>
+    </div>
+  </aside>
+
+  <!-- Live Privacy Lab & Fingerprint Auditor Modal -->
+  <div class="modal-backdrop" id="privacyLabModalBackdrop" style="display: none;">
+    <div class="privacy-lab-card" role="dialog" aria-modal="true" aria-labelledby="privacyLabTitle">
+      <div class="privacy-lab-header">
+        <div class="privacy-lab-brand">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="m4.93 4.93 14.14 14.14"/></svg>
+          <h2 id="privacyLabTitle">Aegis Live Privacy Lab & Auditor</h2>
+        </div>
+        <button class="icon-btn" id="btnClosePrivacyLab" aria-label="Close Privacy Lab">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+      </div>
+
+      <div class="privacy-lab-body">
+        <!-- Top Score Gauge -->
+        <div class="lab-score-banner">
+          <div class="lab-gauge-circle">
+            <span class="lab-gauge-number" id="labScoreNumber">98%</span>
+            <span class="lab-gauge-label">HARDENED</span>
+          </div>
+          <div class="lab-score-text">
+            <h3>Connection Privacy Rating: A+</h3>
+            <p>Your search session is actively shielded by zero-log RAM processing, referrer suppression, and stripped tracking parameters.</p>
+            <button type="button" class="btn-sync-folder" id="btnRunPrivacyAudit" style="margin-top: 10px;">Re-Run Live Diagnostic</button>
+          </div>
+        </div>
+
+        <!-- Diagnostic Grid -->
+        <div class="lab-diagnostics-grid">
+          <div class="lab-diag-card" id="cardWebRtc">
+            <div class="lab-diag-icon">🛡️</div>
+            <div class="lab-diag-content">
+              <h4>WebRTC IP Leakage</h4>
+              <span class="diag-status-badge pass" id="statusWebRtc">Protected</span>
+              <p id="descWebRtc">No private STUN candidate addresses exposed to web.</p>
+            </div>
+          </div>
+
+          <div class="lab-diag-card" id="cardCanvas">
+            <div class="lab-diag-icon">🎨</div>
+            <div class="lab-diag-content">
+              <h4>Canvas Fingerprint</h4>
+              <span class="diag-status-badge pass" id="statusCanvas">Secured</span>
+              <p id="descCanvas">Canvas pixel entropy masked with dynamic noise hashing.</p>
+            </div>
+          </div>
+
+          <div class="lab-diag-card" id="cardReferrer">
+            <div class="lab-diag-icon">🔒</div>
+            <div class="lab-diag-content">
+              <h4>Referrer Suppression</h4>
+              <span class="diag-status-badge pass" id="statusReferrer">no-referrer (Active)</span>
+              <p id="descReferrer">Target websites receive zero originating URL history.</p>
+            </div>
+          </div>
+
+          <div class="lab-diag-card" id="cardAudio">
+            <div class="lab-diag-icon">🔊</div>
+            <div class="lab-diag-content">
+              <h4>AudioContext Fingerprint</h4>
+              <span class="diag-status-badge pass" id="statusAudio">Low Entropy</span>
+              <p id="descAudio">Audio oscillator hardware signature obscured.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Visual Lens & Client-Side EXIF Scrubber Modal -->
+  <div class="modal-backdrop" id="exifModalBackdrop" style="display: none;">
+    <div class="exif-modal-card" role="dialog" aria-modal="true" aria-labelledby="exifModalTitle">
+      <div class="exif-modal-header">
+        <h2 id="exifModalTitle">Visual Lens & On-Device EXIF Scrubber</h2>
+        <button class="icon-btn" id="btnCloseExifModal" aria-label="Close EXIF modal">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+      </div>
+
+      <div class="exif-modal-body">
+        <!-- Dropzone Area -->
+        <div class="exif-dropzone" id="exifDropzone">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+          <h3>Drop an image here, or click to upload</h3>
+          <p>Inspect tracking metadata (camera, GPS, date) and scrub it client-side before searching.</p>
+          <input type="file" id="exifFileInput" accept="image/*" style="display: none;">
+        </div>
+
+        <!-- Preview & Scrubber Results (Hidden initially) -->
+        <div class="exif-result-area" id="exifResultArea" style="display: none;">
+          <div class="exif-preview-box">
+            <img id="exifPreviewImg" src="" alt="Uploaded image">
+          </div>
+          <div class="exif-meta-details">
+            <div class="exif-alert-box" id="exifAlertBox">
+              <span id="exifSummaryText">Analyzing metadata...</span>
+            </div>
+            <div class="exif-tags-list" id="exifTagsList"></div>
+            <div class="exif-actions-row">
+              <button type="button" class="vault-submit-btn" id="btnDownloadScrubbedImg">Download Clean Image (EXIF Scrubbed)</button>
+              <button type="button" class="btn-action-pill" id="btnSearchCleanKeywords">Search by Image Name</button>
+              <button type="button" class="btn-action-pill" id="btnExtractImageOcr" title="Extract text from image using client-side OCR">Extract Text (Lens 2.0 OCR)</button>
+            </div>
+            <div id="exifOcrContainer" style="display: none; margin-top: 12px; background: rgba(0,0,0,0.3); border-radius: 8px; padding: 10px; font-size: 0.82rem; border: 1px solid rgba(56, 189, 248, 0.2);">
+              <strong style="color: #38bdf8; display: block; margin-bottom: 4px;">Extracted Text:</strong>
+              <div id="exifOcrText" style="margin: 6px 0; white-space: pre-wrap; color: var(--text-primary); font-family: var(--font-mono); max-height: 120px; overflow-y: auto;"></div>
+              <button type="button" class="btn-clean-mini" id="btnSearchOcrText" style="margin-top: 6px;">Search Extracted Text</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Local Document Vault Drawer -->
+  <aside class="vault-drawer" id="vaultDrawer" aria-label="Private Document Vault" style="display: none;">
+    <div class="vault-drawer-header">
+      <div class="vault-drawer-title-group">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+        <h2>Private Document Vault</h2>
+      </div>
+      <button class="icon-btn" id="btnCloseVault" title="Close Vault Drawer" aria-label="Close Vault">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+    </div>
+
+    <div class="vault-drawer-body">
+      <!-- Vault Navigation Tabs -->
+      <div class="vault-segmented-tabs">
+        <button type="button" class="vault-seg-tab active" id="tabVaultNotes">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+          <span>Notes & Sync</span>
+        </button>
+        <button type="button" class="vault-seg-tab" id="tabVaultBookmarks">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
+          <span>Bookmarks (<span id="vaultBookmarkCountBadge">0</span>)</span>
+        </button>
+        <button type="button" class="vault-seg-tab" id="tabVaultPasswords">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+          <span>Passwords (<span id="vaultPasswordCountBadge">0</span>)</span>
+        </button>
+      </div>
+
+      <!-- Pane 1: BM25 Notes & Folder Watcher -->
+      <div class="vault-pane active" id="paneVaultNotes">
+        <p class="vault-desc">
+          Index markdown, notes, and code snippets into an in-memory BM25 index on your local computer. Notes never leave this machine.
+        </p>
+
+        <!-- Local Folder Auto-Watcher Box -->
+        <div class="vault-folder-sync-box">
+          <div class="folder-sync-title">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
+            <span>Sync Local Notes Folder</span>
+          </div>
+          <div class="folder-sync-input-group">
+            <input type="text" id="watchedFolderPath" placeholder="e.g. C:\Users\zeesh\Documents\Notes" class="vault-input">
+            <button type="button" class="btn-sync-folder" id="btnSyncFolder">Watch & Sync</button>
+          </div>
+          <div class="folder-sync-status" id="folderSyncStatusText">No folder connected.</div>
+        </div>
+
+        <!-- Add New Document Accordion / Form -->
+        <details class="vault-add-details" id="vaultAddDetails">
+          <summary class="vault-add-summary">
+            <span>+ Add Single Note / Snippet</span>
+          </summary>
+          <form class="vault-form" id="vaultForm">
+            <input type="text" id="vaultDocTitle" placeholder="Document Title..." required class="vault-input">
+            <input type="text" id="vaultDocTags" placeholder="Tags (comma separated, e.g. dev, api, secret)" class="vault-input">
+            <textarea id="vaultDocContent" placeholder="Document content or markdown text..." rows="5" required class="vault-textarea"></textarea>
+            <button type="submit" class="vault-submit-btn" id="btnSaveVaultDoc">Index Into Vault</button>
+          </form>
+        </details>
+
+        <div class="vault-docs-header">
+          <span class="vault-list-title">Indexed Documents (<span id="vaultDocCount">0</span>)</span>
+          <button type="button" class="vault-text-action" id="btnSearchAllVault">Search All</button>
+        </div>
+
+        <div class="vault-doc-list" id="vaultDocList">
+          <!-- Injected via JavaScript -->
+        </div>
+      </div>
+
+      <!-- Pane 2: Private Bookmarks & Reading Vault -->
+      <div class="vault-pane" id="paneVaultBookmarks" style="display: none;">
+        <p class="vault-desc">
+          Zero-tracking private bookmarks saved locally in your browser sandbox. Never synced to third-party ad networks.
+        </p>
+
+        <div class="bookmarks-toolbar">
+          <input type="text" id="bookmarkSearchInput" class="vault-input" placeholder="Filter bookmarks by title or domain...">
+          <div class="bookmarks-actions-row">
+            <button type="button" class="btn-action-pill" id="btnExportBookmarksHtml" title="Export Netscape HTML bookmarks (Firefox/Chrome compatible)">Export HTML</button>
+            <button type="button" class="btn-action-pill" id="btnExportBookmarksJson" title="Export JSON">Export JSON</button>
+            <button type="button" class="btn-action-pill text-danger" id="btnClearAllBookmarks" title="Delete all saved bookmarks">Clear All</button>
+          </div>
+        </div>
+
+        <div class="vault-bookmarks-list" id="vaultBookmarksList">
+          <!-- Populated by JS -->
+        </div>
+      </div>
+
+      <!-- Pane 3: Encrypted Password & Credential Vault (AES-256-GCM) -->
+      <div class="vault-pane" id="paneVaultPasswords" style="display: none;">
+        <div id="vaultPasswordLockedState">
+          <div class="vault-lock-hero">
+            <div class="lock-shield-icon">🔐</div>
+            <h3>Sovereign AES-256 Encrypted Keyring</h3>
+            <p class="vault-desc">Your credentials are encrypted in local memory using AES-GCM-256 with PBKDF2 key derivation (100,000 rounds). Your master passphrase is never sent to any server.</p>
+          </div>
+          <form class="vault-lock-form" id="vaultMasterUnlockForm">
+            <input type="password" id="vaultMasterPassInput" class="vault-input" placeholder="Enter or initialize Master Passphrase..." required autocomplete="current-password">
+            <button type="submit" class="vault-submit-btn" id="btnUnlockKeyring">Unlock Keyring</button>
+          </form>
+        </div>
+
+        <div id="vaultPasswordUnlockedState" style="display: none;">
+          <div class="vault-unlocked-header">
+            <span class="vault-unlocked-status">🟢 Keyring Decrypted (RAM-Only)</span>
+            <button type="button" class="btn-action-pill" id="btnLockKeyring">Lock Keyring</button>
+          </div>
+
+          <!-- Add New Credential Form -->
+          <details class="vault-add-details" id="vaultAddCredentialDetails">
+            <summary class="vault-add-summary">
+              <span>+ Save New Login Credential</span>
+            </summary>
+            <form class="vault-form" id="vaultCredentialForm">
+              <input type="text" id="credSiteDomain" placeholder="Website / Domain (e.g. github.com, google.com)..." required class="vault-input">
+              <input type="text" id="credUsername" placeholder="Username / Email..." required class="vault-input">
+              <div class="password-input-row">
+                <input type="password" id="credPassword" placeholder="Password..." required class="vault-input">
+                <button type="button" class="btn-action-pill" id="btnGeneratePassword" title="Generate strong random password">🎲 Gen</button>
+                <button type="button" class="btn-action-pill" id="btnToggleCredPassword">👁️</button>
+              </div>
+              <input type="text" id="credNotes" placeholder="Notes or 2FA recovery backup (optional)..." class="vault-input">
+              <button type="submit" class="vault-submit-btn" id="btnSaveCredential">Encrypt & Store</button>
+            </form>
+          </details>
+
+          <div class="vault-docs-header">
+            <input type="text" id="vaultCredSearchInput" class="vault-input" placeholder="Filter logins by domain or username...">
+          </div>
+
+          <div class="vault-credentials-list" id="vaultCredentialsList">
+            <!-- Populated by JS -->
+          </div>
+        </div>
+      </div>
+    </div>
+  </aside>
+
+  <!-- Comprehensive Settings Modal (AI, Lenses, Spam Filter, Tor, Backup) -->
+  <div class="modal-backdrop" id="settingsModalBackdrop" style="display: none;">
+    <div class="settings-modal-card" role="dialog" aria-modal="true" aria-labelledby="settingsModalTitle">
+      <div class="settings-modal-header">
+        <h2 id="settingsModalTitle">Aegis Engine Settings</h2>
+        <button class="icon-btn" id="btnCloseSettings" aria-label="Close Settings">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+      </div>
+
+      <div class="settings-modal-body">
+        <div class="settings-nav-tabs">
+          <button class="settings-tab-btn active" data-tab="tabAi">AI Synthesizer</button>
+          <button class="settings-tab-btn" data-tab="tabLenses">Focus Lenses</button>
+          <button class="settings-tab-btn" data-tab="tabSpam">Domain Filter</button>
+          <button class="settings-tab-btn" data-tab="tabTor">Tor / Onion</button>
+          <button class="settings-tab-btn" data-tab="tabBackup">Encrypted Backup</button>
+          <button class="settings-tab-btn" data-tab="tabBrowser">Browser Default</button>
+        </div>
+
+        <div class="settings-tab-content">
+          <!-- Tab 1: AI Config -->
+          <div class="settings-pane active" id="paneAi">
+            <h3>Perplexity-Style AI Engine</h3>
+            <p class="settings-desc">Choose how search result summaries are generated. Keys are stored solely in your local browser sandbox.</p>
+
+            <div class="form-group">
+              <label for="aiProviderSelect">AI Provider</label>
+              <select id="aiProviderSelect" class="vault-input">
+                <option value="auto">Auto (Ollama -> Gemini -> Offline Extractive)</option>
+                <option value="ollama">Local Ollama (100% Offline via localhost:11434)</option>
+                <option value="gemini">Google Gemini API (User Key)</option>
+                <option value="extractive">Aegis Smart-NLP (Built-in Offline)</option>
+              </select>
+            </div>
+
+            <div class="form-group" id="geminiKeyGroup" style="display: none;">
+              <label for="geminiApiKeyInput">Gemini API Key (Kept strictly in browser RAM)</label>
+              <input type="password" id="geminiApiKeyInput" placeholder="AIzaSy..." class="vault-input">
+            </div>
+
+            <div class="form-group">
+              <label for="aiModelInput">Model Name</label>
+              <input type="text" id="aiModelInput" placeholder="llama3 or gemini-2.0-flash" class="vault-input">
+            </div>
+
+            <button type="button" class="search-submit-btn" id="btnSaveAiSettings">Save AI Preferences</button>
+          </div>
+
+          <!-- Tab 2: Lenses Manager -->
+          <div class="settings-pane" id="paneLenses">
+            <h3>Custom Focus Lenses</h3>
+            <p class="settings-desc">Create personalized lenses to instantly restrict search results to your trusted domains.</p>
+            
+            <div class="form-group">
+              <label for="customLensName">Lens Name & Icon</label>
+              <div style="display: flex; gap: 8px;">
+                <input type="text" id="customLensIcon" placeholder="🔬" style="width: 60px;" class="vault-input">
+                <input type="text" id="customLensName" placeholder="e.g. Linux & SysAdmin" class="vault-input">
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="customLensDomains">Include Domains (comma separated)</label>
+              <input type="text" id="customLensDomains" placeholder="archlinux.org, kernel.org, debian.org" class="vault-input">
+            </div>
+
+            <button type="button" class="btn-sync-folder" id="btnCreateCustomLens">Create Custom Lens</button>
+            <div class="blocked-domains-list" id="customLensesList" style="margin-top: 16px;"></div>
+          </div>
+
+          <!-- Tab 3: Spam Filter -->
+          <div class="settings-pane" id="paneSpam">
+            <h3>SEO Spam & Content Farm Blocker</h3>
+            <p class="settings-desc">Block clickbait walls and scraped junk domains from appearing in your results.</p>
+            <div class="add-domain-row">
+              <input type="text" id="newBlockedDomainInput" placeholder="e.g. pinterest.com" class="vault-input">
+              <button type="button" class="btn-sync-folder" id="btnAddBlockedDomain">Block</button>
+            </div>
+            <div class="blocked-domains-list" id="blockedDomainsList"></div>
+          </div>
+
+          <!-- Tab 4: Tor / Onion -->
+          <div class="settings-pane" id="paneTor">
+            <h3>Tor & Onion Network Connectivity</h3>
+            <p class="settings-desc">Check your local Tor daemon connection (port 9050 or 9150) for anonymous multi-hop onion routing.</p>
+            <div class="tor-status-card" id="torStatusCard">
+              <div class="pulse-indicator" style="background: #fbbf24;"></div>
+              <span id="torStatusText">Checking Tor status...</span>
+            </div>
+            <button type="button" class="btn-action-pill" id="btnRefreshTor" style="margin-top: 14px;">Recheck Tor Connection</button>
+          </div>
+
+          <!-- Tab 5: Encrypted Backup -->
+          <div class="settings-pane" id="paneBackup">
+            <h3>AES-GCM 256-Bit Encrypted Vault Backup</h3>
+            <p class="settings-desc">Export or restore your bookmarks, search archives, and preferences with client-side password encryption.</p>
+
+            <div class="form-group">
+              <label for="vaultBackupPassword">Encryption Password</label>
+              <input type="password" id="vaultBackupPassword" placeholder="Strong passphrase..." class="vault-input">
+            </div>
+
+            <div class="backup-buttons-row">
+              <button type="button" class="vault-submit-btn" id="btnExportEncryptedVault">Export .aegis Vault</button>
+              <label class="btn-action-pill" style="cursor: pointer; padding: 10px 16px;">
+                Import .aegis
+                <input type="file" id="inputImportEncryptedVault" accept=".aegis,.json" style="display: none;">
+              </label>
+              <button type="button" class="btn-action-pill" id="btnExportHtmlBookmarks">Export HTML Bookmarks</button>
+            </div>
+          </div>
+
+          <!-- Tab 6: Browser Default -->
+          <div class="settings-pane" id="paneBrowser">
+            <h3>Make Aegis Your Default Search Engine</h3>
+            <p class="settings-desc">Aegis supports the OpenSearch standard. You can set it as your default address bar engine in your browser.</p>
+
+            <div class="opensearch-instructions">
+              <ol>
+                <li><strong>Chrome / Brave / Edge:</strong> Open <em>Settings &gt; Search Engine &gt; Manage search engines</em>. Under "Site search", click "Add" and set URL to <code>http://localhost:3000/?q=%s</code>.</li>
+                <li><strong>Firefox:</strong> Right-click the address bar or search bar and select <strong>"Add Aegis Search"</strong>.</li>
+              </ol>
+              <button type="button" class="search-submit-btn" id="btnOpenSearchHelper" style="margin-top: 12px;">Copy Search URL</button>
+            </div>
+
+            <div class="settings-group" style="margin-top: 24px; padding-top: 16px; border-top: 1px solid rgba(255, 255, 255, 0.08);">
+              <label for="linkOpenModeSelect" style="display: block; font-weight: 600; margin-bottom: 6px; color: var(--text-primary);">Search Result Link Destination</label>
+              <p class="settings-desc" style="margin-bottom: 10px;">Choose how search results and web links behave when clicked.</p>
+              <select id="linkOpenModeSelect" class="settings-select" style="width: 100%; max-width: 480px; padding: 10px; background: rgba(0,0,0,0.5); border: 1px solid rgba(255,255,255,0.15); border-radius: 8px; color: #fff;">
+                <option value="direct">Open in New Tab (100% Native Web Compatibility & Google Logins)</option>
+                <option value="sandboxed">Open inside Aegis Sandboxed Private Browser</option>
+              </select>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Image Lightbox Modal -->
+  <div class="modal-backdrop" id="imageLightboxBackdrop" style="display: none;">
+    <div class="lightbox-card">
+      <div class="lightbox-top">
+        <span id="lightboxTitle">Image Preview</span>
+        <div class="lightbox-top-controls">
+          <button type="button" class="icon-btn" id="btnLightboxZoomOut" title="Zoom Out (-)">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="8" y1="11" x2="14" y2="11"/></svg>
+          </button>
+          <button type="button" class="icon-btn" id="btnLightboxZoomIn" title="Zoom In (+)">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/></svg>
+          </button>
+          <button type="button" class="icon-btn" id="btnCloseLightbox" title="Close Lightbox (Esc)">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+          </button>
+        </div>
+      </div>
+      <div class="lightbox-img-container" id="lightboxImgContainer">
+        <button type="button" class="lightbox-nav-btn btn-prev" id="btnLightboxPrev" title="Previous Image (Left Arrow)">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg>
+        </button>
+        <img id="lightboxImage" src="" alt="High-Resolution Photo Preview">
+        <button type="button" class="lightbox-nav-btn btn-next" id="btnLightboxNext" title="Next Image (Right Arrow)">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>
+        </button>
+      </div>
+      <div class="lightbox-actions">
+        <a id="lightboxDownloadBtn" href="#" download class="btn-action-pill btn-primary-pill">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="15" height="15"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          Download Photo
+        </a>
+        <button type="button" class="btn-action-pill" id="btnLightboxOpenInBrowser">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="15" height="15"><rect x="2" y="3" width="20" height="18" rx="3" ry="3"/><line x1="2" y1="9" x2="22" y2="9"/></svg>
+          Open in Browser Tab
+        </button>
+        <button type="button" class="btn-action-pill" id="btnLightboxCopyAddress">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="15" height="15"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+          Copy Image URL
+        </button>
+        <a id="lightboxSourceBtn" href="#" target="_blank" rel="noopener noreferrer" class="btn-action-pill">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="15" height="15"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+          Source Page
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Privacy Video Player Modal -->
+  <div class="modal-backdrop" id="videoModalBackdrop" style="display: none;">
+    <div class="video-modal-card">
+      <div class="video-modal-top">
+        <span id="videoModalTitle">Privacy-Hardened Player</span>
+        <div class="video-top-actions">
+          <button type="button" class="btn-action-pill" id="btnVideoOpenInBrowser">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14"><rect x="2" y="3" width="20" height="18" rx="3" ry="3"/><line x1="2" y1="9" x2="22" y2="9"/></svg>
+            Open in Browser Tab
+          </button>
+          <button type="button" class="icon-btn" id="btnCloseVideo" aria-label="Close Video">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+          </button>
+        </div>
+      </div>
+      <div class="video-iframe-wrapper">
+        <iframe id="videoIframe" src="" title="Video Player" frameborder="0" allowfullscreen allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"></iframe>
+      </div>
+    </div>
+  </div>
+
+  <!-- Keyboard Shortcuts Modal -->
+  <div class="modal-backdrop" id="shortcutsModalBackdrop" style="display: none;">
+    <div class="shortcuts-card" role="dialog" aria-modal="true" aria-labelledby="shortcutsModalTitle">
+      <div class="shortcuts-header">
+        <h3 id="shortcutsModalTitle">Keyboard Shortcuts</h3>
+        <button class="icon-btn" id="btnCloseShortcuts" aria-label="Close shortcuts">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+      </div>
+      <div class="shortcuts-list">
+        <div class="shortcut-item">
+          <span>Universal Command Palette</span>
+          <div><kbd>Ctrl</kbd>+<kbd>K</kbd></div>
+        </div>
+        <div class="shortcut-item">
+          <span>Focus Search Bar</span>
+          <kbd>/</kbd>
+        </div>
+        <div class="shortcut-item">
+          <span>Navigate Results</span>
+          <div><kbd>j</kbd> / <kbd>k</kbd> or <kbd>↓</kbd> / <kbd>↑</kbd></div>
+        </div>
+        <div class="shortcut-item">
+          <span>Open Selected Result</span>
+          <kbd>Enter</kbd>
+        </div>
+        <div class="shortcut-item">
+          <span>Open Result in Proxy Reader</span>
+          <kbd>p</kbd>
+        </div>
+        <div class="shortcut-item">
+          <span>Toggle Document Vault</span>
+          <kbd>v</kbd>
+        </div>
+        <div class="shortcut-item">
+          <span>Toggle Research Scratchpad</span>
+          <div><kbd>Alt</kbd>+<kbd>N</kbd></div>
+        </div>
+        <div class="shortcut-item">
+          <span>Open Settings Modal</span>
+          <kbd>,</kbd>
+        </div>
+        <div class="shortcut-item">
+          <span>Clear / Close Modals</span>
+          <kbd>Esc</kbd>
+        </div>
+        <div class="shortcut-item">
+          <span>Open Crawler Studio</span>
+          <div><kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>C</kbd></div>
+        </div>
+        <div class="shortcut-item">
+          <span>Open Private Browser</span>
+          <div><kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>B</kbd></div>
+        </div>
+        <div class="shortcut-item">
+          <span>Panic: Wipe Local Storage</span>
+          <div><kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>X</kbd></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Crawler Studio Modal (Autonomous Spider & Native Search Index) -->
+  <div class="modal-backdrop" id="crawlerStudioModalBackdrop" style="display: none;">
+    <div class="crawler-studio-card" role="dialog" aria-modal="true" aria-labelledby="crawlerStudioTitle">
+      <div class="crawler-studio-header">
+        <div class="crawler-header-titles">
+          <div class="crawler-title-row">
+            <span class="crawler-status-dot" id="crawlerHeaderStatusDot"></span>
+            <h2 id="crawlerStudioTitle">🕷️ Autonomous Web Crawler & Native Search Engine</h2>
+            <span class="badge-tag reader-secure-badge">BM25 + Link Graph</span>
+          </div>
+          <p class="crawler-subtitle">
+            Crawl documentation, websites, and knowledge bases autonomously. All indexed locally with zero telemetry and 100% offline retrieval.
+          </p>
+        </div>
+        <button class="icon-btn" id="btnCloseCrawlerStudio" title="Close Studio (Esc)" aria-label="Close Crawler Studio">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+      </div>
+
+      <!-- HUD Stats Strip -->
+      <div class="crawler-hud-strip">
+        <div class="crawler-hud-item">
+          <span class="hud-item-label">STATUS</span>
+          <span class="hud-item-val" id="crawlerHudStatus">IDLE</span>
+        </div>
+        <div class="crawler-hud-item">
+          <span class="hud-item-label">INDEXED PAGES</span>
+          <span class="hud-item-val emerald" id="crawlerHudDocs">0</span>
+        </div>
+        <div class="crawler-hud-item">
+          <span class="hud-item-label">INVERTED TERMS</span>
+          <span class="hud-item-val" id="crawlerHudTerms">0</span>
+        </div>
+        <div class="crawler-hud-item">
+          <span class="hud-item-label">CRAWL QUEUE</span>
+          <span class="hud-item-val" id="crawlerHudQueue">0</span>
+        </div>
+        <div class="crawler-hud-item">
+          <span class="hud-item-label">AVG DOC LENGTH</span>
+          <span class="hud-item-val" id="crawlerHudAvgWords">0 words</span>
+        </div>
+      </div>
+
+      <!-- Body split grid -->
+      <div class="crawler-studio-grid">
+        <!-- Control Panel Column -->
+        <div class="crawler-controls-col">
+          <div class="crawler-panel-section">
+            <label class="crawler-label" for="crawlerSeedUrl">Seed Target URL</label>
+            <div class="crawler-input-group">
+              <input type="url" id="crawlerSeedUrl" class="crawler-text-input" placeholder="https://expressjs.com/en/starter/installing.html" spellcheck="false">
+            </div>
+
+            <!-- Presets -->
+            <div class="crawler-presets-group">
+              <span class="presets-label">Quick Seed Presets:</span>
+              <div class="presets-chips">
+                <button type="button" class="crawler-preset-btn" data-preset="express">🚀 Express.js</button>
+                <button type="button" class="crawler-preset-btn" data-preset="sqlite">💾 SQLite</button>
+                <button type="button" class="crawler-preset-btn" data-preset="rust">🦀 Rust Book</button>
+                <button type="button" class="crawler-preset-btn" data-preset="arch">🐧 Arch Wiki</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="crawler-panel-section crawler-sliders-grid">
+            <div class="slider-field">
+              <div class="slider-header">
+                <label for="crawlerMaxPages">Max Pages</label>
+                <span class="slider-val" id="valMaxPages">15</span>
+              </div>
+              <input type="range" id="crawlerMaxPages" min="1" max="100" value="15" class="crawler-range-slider">
+            </div>
+
+            <div class="slider-field">
+              <div class="slider-header">
+                <label for="crawlerMaxDepth">Max Depth</label>
+                <span class="slider-val" id="valMaxDepth">2</span>
+              </div>
+              <input type="range" id="crawlerMaxDepth" min="0" max="5" value="2" class="crawler-range-slider">
+            </div>
+
+            <div class="slider-field">
+              <div class="slider-header">
+                <label for="crawlerDelayMs">Politeness Delay</label>
+                <span class="slider-val" id="valDelayMs">300ms</span>
+              </div>
+              <input type="range" id="crawlerDelayMs" min="100" max="2000" step="50" value="300" class="crawler-range-slider">
+            </div>
+          </div>
+
+          <!-- Radar Visualizer -->
+          <div class="crawler-radar-card">
+            <div class="radar-display">
+              <div class="radar-grid-rings"></div>
+              <div class="radar-crosshairs"></div>
+              <div class="radar-sweep-beam" id="radarSweepBeam"></div>
+              <div class="radar-blips-container" id="radarBlipsContainer"></div>
+            </div>
+            <div class="radar-caption">
+              <span class="radar-subtext" id="radarStatusText">Spider Radar: Idle</span>
+            </div>
+          </div>
+
+          <!-- Actions -->
+          <div class="crawler-actions-row">
+            <button type="button" class="btn-crawler-action btn-start-crawl" id="btnStartCrawl">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+              <span>Launch Spider</span>
+            </button>
+            <button type="button" class="btn-crawler-action btn-stop-crawl" id="btnStopCrawl" disabled>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="6" y="6" width="12" height="12"/></svg>
+              <span>Stop Crawl</span>
+            </button>
+            <button type="button" class="btn-crawler-action btn-rebuild-index" id="btnRebuildIndex" title="Recompute BM25 weights & Link Graph">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
+              <span>Re-index</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Terminal & Index Inventory Column -->
+        <div class="crawler-views-col">
+          <!-- Terminal Tab / Inventory Tab Nav -->
+          <div class="crawler-tabs-nav">
+            <button type="button" class="crawler-view-tab active" id="tabCrawlerTerminal">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="4 17 10 11 4 5"/><line x1="12" y1="19" x2="20" y2="19"/></svg>
+              Spider Live Terminal
+            </button>
+            <button type="button" class="crawler-view-tab" id="tabCrawlerDocs">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+              Indexed Inventory (<span id="crawlerDocsCountBadge">0</span>)
+            </button>
+            <div class="crawler-terminal-controls">
+              <button type="button" class="terminal-ctrl-btn" id="btnClearTerminalLogs" title="Clear Console Output">Clear</button>
+              <button type="button" class="terminal-ctrl-btn text-danger" id="btnClearCrawlerIndex" title="Wipe all indexed pages and restore seed defaults">Reset Index</button>
+            </div>
+          </div>
+
+          <!-- Terminal View Window -->
+          <div class="crawler-terminal-box" id="crawlerTerminalBox">
+            <div class="crawler-terminal-feed" id="crawlerLogTerminal" role="log" aria-live="polite">
+              <div class="log-line log-system"><span class="log-time">[00:00:00]</span> <span class="log-tag tag-sys">[AEGIS-SPIDER]</span> Native Inverted Index engine initialized. Ready to crawl target websites.</div>
+            </div>
+          </div>
+
+          <!-- Documents Inventory View Window -->
+          <div class="crawler-docs-box" id="crawlerDocsBox" style="display: none;">
+            <div class="docs-table-wrapper">
+              <table class="crawler-table">
+                <thead>
+                  <tr>
+                    <th>Title & URL</th>
+                    <th>Words</th>
+                    <th>Rank Boost</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody id="crawlerDocsTableBody">
+                  <!-- Populated by JS -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Built-In Sandboxed Private Web Browser Modal & Workspace -->
+  <div class="modal-backdrop private-browser-backdrop" id="privateBrowserModalBackdrop" style="display: none;">
+    <div class="private-browser-card" id="privateBrowserCard" role="dialog" aria-modal="true" aria-label="Aegis Sandboxed Private Web Browser">
+      
+      <!-- Top Chrome Bar: Multi-Tab Strip & Window Controls -->
+      <div class="browser-chrome-top">
+        <!-- Workspaces Selector (Arc / Chrome Tab Groups) -->
+        <div class="browser-workspaces-bar" id="browserWorkspacesBar">
+          <button type="button" class="workspace-pill active" data-workspace="personal" title="Personal Workspace">
+            <span class="ws-dot personal"></span>
+            <span>Personal</span>
+          </button>
+          <button type="button" class="workspace-pill" data-workspace="work" title="Work Workspace">
+            <span class="ws-dot work"></span>
+            <span>Work</span>
+          </button>
+          <button type="button" class="workspace-pill" data-workspace="research" title="Research Workspace">
+            <span class="ws-dot research"></span>
+            <span>Research</span>
+          </button>
+          <button type="button" class="workspace-pill" data-workspace="dev" title="Developer Workspace">
+            <span class="ws-dot dev"></span>
+            <span>Dev</span>
+          </button>
+        </div>
+
+        <div class="browser-tabs-strip" id="browserTabsStrip">
+          <div class="browser-tabs-list" id="browserTabsList">
+            <!-- Tabs dynamically rendered by JS -->
+          </div>
+          <button type="button" class="btn-browser-tab-new" id="btnBrowserNewTab" title="Open New Tab (Ctrl+T)" aria-label="New Tab">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          </button>
+        </div>
+
+        <div class="browser-window-controls">
+          <button type="button" class="browser-win-btn" id="btnToggleVerticalTabs" title="Toggle Arc-Style Vertical Tabs (Ctrl+[)" aria-label="Vertical Tabs">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="9" y1="3" x2="9" y2="21"/></svg>
+          </button>
+          <button type="button" class="browser-win-btn" id="btnBrowserSplitScreen" title="Toggle Split Screen View (Side-by-Side with Search)" aria-label="Split Screen">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="12" y1="3" x2="12" y2="21"/></svg>
+          </button>
+          <button type="button" class="browser-win-btn" id="btnBrowserMaximize" title="Toggle Fullscreen Window" aria-label="Maximize">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 3 21 3 21 9"/><polyline points="9 21 3 21 3 15"/><line x1="21" y1="3" x2="14" y2="10"/><line x1="3" y1="21" x2="10" y2="14"/></svg>
+          </button>
+          <button type="button" class="browser-win-btn btn-win-close" id="btnCloseBrowser" title="Close Browser (Esc)" aria-label="Close Browser">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+          </button>
+        </div>
+      </div>
+
+      <!-- Navigation & Omnibox Toolbar -->
+      <div class="browser-omnibox-toolbar">
+        <div class="browser-nav-buttons">
+          <button type="button" class="browser-toolbar-btn" id="btnBrowserBack" title="Back (Alt+Left)" aria-label="Back" disabled>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><polyline points="15 18 9 12 15 6"/></svg>
+          </button>
+          <button type="button" class="browser-toolbar-btn" id="btnBrowserForward" title="Forward (Alt+Right)" aria-label="Forward" disabled>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><polyline points="9 18 15 12 9 6"/></svg>
+          </button>
+          <button type="button" class="browser-toolbar-btn" id="btnBrowserReload" title="Reload (Ctrl+R)" aria-label="Reload">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg>
+          </button>
+          <button type="button" class="browser-toolbar-btn" id="btnBrowserHome" title="Browser Home / Start Page" aria-label="Home">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+          </button>
+        </div>
+
+        <!-- Central Omnibox Input Field -->
+        <form class="browser-omnibox-form" id="browserOmniboxForm">
+          <div class="browser-omnibox-wrapper">
+            <div class="browser-security-badge" id="browserSecurityBadge" title="Sandboxed Streaming Proxy • Frame Unblocked • Referrer Suppressed">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+              <span>Proxy</span>
+            </div>
+
+            <!-- Search Engine Selector -->
+            <div class="browser-engine-picker" id="browserEnginePicker" title="Change Search Engine">
+              <button type="button" class="btn-browser-engine" id="btnBrowserCurrentEngine" aria-haspopup="true" aria-expanded="false">
+                <span id="browserEngineIcon">🛡️</span>
+                <span id="browserEngineLabel">Aegis</span>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+              </button>
+              <div class="browser-engine-dropdown" id="browserEngineDropdown" style="display: none;">
+                <div class="engine-opt active" data-engine="aegis">
+                  <span class="engine-opt-icon">🛡️</span>
+                  <div class="engine-opt-meta">
+                    <strong>Aegis Engine (Our Own)</strong>
+                    <small>Default • Autonomous, zero-tracking, all queries</small>
+                  </div>
+                </div>
+                <div class="engine-opt" data-engine="bing">
+                  <span class="engine-opt-icon">🅱️</span>
+                  <div class="engine-opt-meta">
+                    <strong>Bing Privacy Search</strong>
+                    <small>High-speed, independent web index</small>
+                  </div>
+                </div>
+                <div class="engine-opt" data-engine="brave">
+                  <span class="engine-opt-icon">🦁</span>
+                  <div class="engine-opt-meta">
+                    <strong>Brave Search</strong>
+                    <small>Independent privacy-first engine</small>
+                  </div>
+                </div>
+                <div class="engine-opt" data-engine="google">
+                  <span class="engine-opt-icon">🔍</span>
+                  <div class="engine-opt-meta">
+                    <strong>Google Search</strong>
+                    <small>Standard comprehensive web search</small>
+                  </div>
+                </div>
+                <div class="engine-opt" data-engine="startpage">
+                  <span class="engine-opt-icon">🌐</span>
+                  <div class="engine-opt-meta">
+                    <strong>Startpage</strong>
+                    <small>Private Google search results</small>
+                  </div>
+                </div>
+                <div class="engine-opt" data-engine="ddg">
+                  <span class="engine-opt-icon">🦆</span>
+                  <div class="engine-opt-meta">
+                    <strong>DuckDuckGo HTML</strong>
+                    <small>External web search</small>
+                  </div>
+                </div>
+                <div class="engine-opt" data-engine="wikipedia">
+                  <span class="engine-opt-icon">📖</span>
+                  <div class="engine-opt-meta">
+                    <strong>Wikipedia</strong>
+                    <small>Search encyclopedia directly</small>
+                  </div>
+                </div>
+                <div class="engine-opt" data-engine="github">
+                  <span class="engine-opt-icon">🐙</span>
+                  <div class="engine-opt-meta">
+                    <strong>GitHub</strong>
+                    <small>Code & developer repos</small>
+                  </div>
+                </div>
+                <div class="engine-opt" data-engine="mdn">
+                  <span class="engine-opt-icon">💻</span>
+                  <div class="engine-opt-meta">
+                    <strong>MDN Web Docs</strong>
+                    <small>Web standards & JavaScript specs</small>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <input type="text" class="browser-url-input" id="browserUrlInput" placeholder="Search privately or type web address (e.g. expressjs.com)..." spellcheck="false" autocomplete="off">
+
+            <div class="browser-shield-hud-pill" id="browserShieldPill" title="Live Privacy Shield: Third-party trackers stripped & canvas cloaked">
+              <span class="shield-pulse-dot"></span>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+              <span id="browserBlockedCount">0</span>
+            </div>
+          </div>
+
+          <!-- Live Floating Suggestions Dropdown -->
+          <div class="browser-suggestions-dropdown" id="browserSuggestionsDropdown" style="display: none;"></div>
+        </form>
+
+        <!-- Right Side Browser Utilities -->
+        <div class="browser-util-buttons">
+          <!-- Chrome Downloads Manager -->
+          <button type="button" class="browser-util-btn" id="btnBrowserDownloads" title="Downloads (Google Chrome-grade Manager)" aria-label="Downloads">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            <span class="download-badge-count" id="browserDownloadsBadge" style="display: none;">0</span>
+          </button>
+
+          <!-- Chrome Extensions Manager -->
+          <button type="button" class="browser-util-btn" id="btnBrowserExtensions" title="Chrome Extensions Manager (uBlock, Dark Reader & More)" aria-label="Extensions">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg>
+          </button>
+
+          <!-- DevTools Inspect Element Toggle -->
+          <button type="button" class="browser-util-btn" id="btnBrowserDevTools" title="Toggle Developer Tools / Inspect Element (F12)" aria-label="Developer Tools">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+          </button>
+
+          <!-- Capture Full Page Screenshot -->
+          <button type="button" class="browser-util-btn" id="btnBrowserScreenshot" title="Capture Webpage Screenshot" aria-label="Screenshot">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
+          </button>
+
+          <!-- Save Clean PDF Document -->
+          <button type="button" class="browser-util-btn" id="btnBrowserPdfExport" title="Save Clean PDF Document" aria-label="Export PDF">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+          </button>
+
+          <!-- Picture-in-Picture Floating Player -->
+          <button type="button" class="browser-util-btn" id="btnBrowserPiP" title="Picture-in-Picture Mini Player" aria-label="Picture in Picture">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><rect x="11" y="9" width="9" height="7" rx="1"/></svg>
+          </button>
+
+          <button type="button" class="browser-util-btn btn-burn-tab" id="btnBrowserBurnTab" title="Burn Tab 🔥: Shred cookies, isolated cache & session memory (Ctrl+Shift+K)">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z"/></svg>
+            <span>Burn</span>
+          </button>
+
+          <button type="button" class="browser-util-btn" id="btnBrowserClipToNotes" title="Clip Page Content to Scratchpad">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+          </button>
+
+          <button type="button" class="browser-util-btn" id="btnBrowserReaderToggle" title="Toggle Clean Reader Mode">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+          </button>
+
+          <!-- Split View (Dual Browsing Side-by-Side) -->
+          <button type="button" class="browser-util-btn" id="btnToggleSplitView" title="Split View: Dual Browsing Side-by-Side (Alt+S)" aria-label="Split View">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="12" y1="3" x2="12" y2="21"/></svg>
+            <span>Split</span>
+          </button>
+
+          <!-- 1-Click AI Page Summarizer -->
+          <button type="button" class="browser-util-btn btn-ai-summarize-pill" id="btnSummarizePage" title="✨ AI Page Summarizer: Generate Instant TL;DR & Insights (Alt+Z)" aria-label="Summarize Page">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+            <span>✨ Summarize</span>
+          </button>
+
+          <!-- 1-Click Time Machine Archive Lookup -->
+          <button type="button" class="browser-util-btn btn-time-machine-pill" id="btnBrowserTimeMachine" title="⌛ Time Machine: Look up historical snapshots, bypass paywalls & view web archives (Alt+H)" aria-label="Time Machine">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/><path d="M12 2v4M4.93 4.93l2.83 2.83M2 12h4M12 22v-4M22 12h-4M19.07 4.93l-2.83 2.83"/></svg>
+            <span>⌛ Time Machine</span>
+          </button>
+
+          <button type="button" class="browser-util-btn btn-open-external-pill" id="btnBrowserExternalLink" title="Open in New Aegis Browser Tab" aria-label="Open in Tab">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+            <span>Open in Tab ↗</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Chrome-Style Floating Downloads Popover -->
+      <div class="browser-downloads-popover" id="browserDownloadsPopover" style="display: none;">
+        <div class="downloads-popover-header">
+          <div class="downloads-popover-title">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            <span>Downloads</span>
+          </div>
+          <div class="downloads-popover-actions">
+            <button type="button" class="btn-clean-mini" id="btnOpenDownloadsFolder" title="Open System Downloads Folder">Folder</button>
+            <button type="button" class="btn-clean-mini" id="btnClearDownloadsList" title="Clear Download History">Clear</button>
+          </div>
+        </div>
+        <div class="downloads-popover-list" id="browserDownloadsList">
+          <div class="empty-downloads-placeholder">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" width="32" height="32"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            <p>No downloads yet</p>
+            <small>Downloaded files and media will show here</small>
+          </div>
+        </div>
+      </div>
+
+      <!-- Brave Shields Visual Cockpit Popover -->
+      <div class="browser-shields-popover" id="browserShieldsPopover" style="display: none;">
+        <div class="shields-cockpit-header">
+          <div class="shields-header-title">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20" class="shields-main-icon"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+            <div>
+              <span class="shields-status-badge" id="shieldsStatusBadge">SHIELDS ACTIVE</span>
+              <div class="shields-target-site" id="shieldsTargetSite">Current Site: aegis-browser.internal</div>
+            </div>
+          </div>
+          <button type="button" class="shields-master-switch active" id="shieldsMasterSwitch" title="Toggle Shields For This Site">
+            <span class="switch-handle"></span>
+          </button>
+        </div>
+
+        <div class="shields-stats-grid">
+          <div class="shields-stat-card">
+            <span class="stat-number" id="shieldsStatTrackers">0</span>
+            <span class="stat-label">Trackers & Ads Blocked</span>
+          </div>
+          <div class="shields-stat-card">
+            <span class="stat-number" id="shieldsStatFingerprints">0</span>
+            <span class="stat-label">Fingerprints Cloaked</span>
+          </div>
+          <div class="shields-stat-card">
+            <span class="stat-number" id="shieldsStatBandwidth">0 KB</span>
+            <span class="stat-label">Bandwidth Saved</span>
+          </div>
+          <div class="shields-stat-card">
+            <span class="stat-number" id="shieldsStatSpeedup">3.2x</span>
+            <span class="stat-label">Speedup Factor</span>
+          </div>
+        </div>
+
+        <div class="shields-controls-list">
+          <div class="shields-control-row">
+            <div class="shields-control-info">
+              <strong>Trackers & Ads Blocking</strong>
+              <small>Purges tracking cookies, telemetry beacons & intrusive banners</small>
+            </div>
+            <select class="shields-select-control" id="shieldsSelectAds">
+              <option value="aggressive" selected>Aggressive</option>
+              <option value="standard">Standard</option>
+              <option value="allow">Allow All</option>
+            </select>
+          </div>
+
+          <div class="shields-control-row">
+            <div class="shields-control-info">
+              <strong>Fingerprint Randomizer</strong>
+              <small>Perturbs Canvas, WebGL, AudioContext & Client Hints</small>
+            </div>
+            <label class="aegis-toggle-switch">
+              <input type="checkbox" id="shieldsToggleFingerprint" checked>
+              <span class="toggle-slider"></span>
+            </label>
+          </div>
+
+          <div class="shields-control-row">
+            <div class="shields-control-info">
+              <strong>Memory Saver & Tab Sleep</strong>
+              <small>Freezes inactive background tabs to save battery and RAM</small>
+            </div>
+            <label class="aegis-toggle-switch">
+              <input type="checkbox" id="shieldsToggleMemorySaver" checked>
+              <span class="toggle-slider"></span>
+            </label>
+          </div>
+
+          <div class="shields-control-row">
+            <div class="shields-control-info">
+              <strong>Strict HTTPS Upgrades</strong>
+              <small>Refuses unencrypted plaintext connections</small>
+            </div>
+            <label class="aegis-toggle-switch">
+              <input type="checkbox" id="shieldsToggleHttps" checked>
+              <span class="toggle-slider"></span>
+            </label>
+          </div>
+        </div>
+
+        <div class="shields-cockpit-footer">
+          <button type="button" class="btn-clean-mini" id="btnClearSiteData" title="Purge site cookies, local storage and cache">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="13" height="13"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+            <span>Clear Cache & Cookies for Site</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Loading Progress Bar Indicator -->
+      <div class="browser-loading-bar-track">
+        <div class="browser-loading-bar-fill" id="browserLoadingBar"></div>
+      </div>
+
+      <!-- Browser Viewport & Start Page -->
+      <div class="browser-viewport" id="browserViewport">
+        <!-- Arc-Style Vertical Sidebar -->
+        <aside class="browser-vertical-sidebar" id="browserVerticalSidebar" style="display: none;">
+          <div class="vertical-sidebar-header">
+            <div class="vertical-workspace-badge" id="verticalWorkspaceBadge">
+              <span class="ws-icon" id="verticalWsIcon">👤</span>
+              <span class="ws-name" id="verticalWsName">Personal</span>
+            </div>
+            <button type="button" class="icon-btn-micro" id="btnVerticalNewTab" title="New Tab in Current Workspace">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            </button>
+          </div>
+
+          <!-- Vertical Tabs Scroll Area -->
+          <div class="vertical-tabs-list" id="browserVerticalTabsList">
+            <!-- Dynamically populated vertical tab items -->
+          </div>
+
+          <div class="vertical-sidebar-footer">
+            <span class="vertical-stats-badge" id="verticalTabsCountBadge">1 tab</span>
+            <button type="button" class="icon-btn-micro" id="btnCollapseVerticalSidebar" title="Collapse / Expand Sidebar">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="13" height="13"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+            </button>
+          </div>
+        </aside>
+
+        <!-- Primary Split View Pane (Default single-view / Left pane) -->
+        <div class="browser-pane browser-primary-pane" id="browserPrimaryPane">
+          <!-- Built-in Start / New Tab Page -->
+          <div class="browser-start-page" id="browserStartPage">
+            <div class="start-page-content">
+              <div class="start-brand-badge">
+                <img src="/app-icon.png" class="start-brand-icon" alt="" width="20" height="20">
+                <span>AEGIS ULTIMATE BROWSER</span>
+              </div>
+              <h2>Browse with <span class="gradient-text">Complete Freedom & Protection</span></h2>
+              <p class="start-subtitle">Every website, video, and web app functions 100% natively without broken buttons or blocked elements, powered by an isolated Chromium runtime with zero tracking.</p>
+
+              <!-- Quick Jump Bookmark Cards -->
+              <div class="browser-quick-links-grid">
+                <button type="button" class="quick-link-card" data-url="https://en.wikipedia.org/wiki/Main_Page">
+                  <span class="ql-icon">📖</span>
+                  <strong>Wikipedia</strong>
+                  <small>The Free Encyclopedia</small>
+                </button>
+                <button type="button" class="quick-link-card" data-url="https://youtube.com">
+                  <span class="ql-icon">▶️</span>
+                  <strong>YouTube</strong>
+                  <small>Video Streaming & Music</small>
+                </button>
+                <button type="button" class="quick-link-card" data-url="https://developer.mozilla.org/en-US/">
+                  <span class="ql-icon">💻</span>
+                  <strong>MDN Web Docs</strong>
+                  <small>Web Standards & Guides</small>
+                </button>
+                <button type="button" class="quick-link-card" data-url="https://news.ycombinator.com">
+                  <span class="ql-icon">💬</span>
+                  <strong>Hacker News</strong>
+                  <small>Tech Discussions & News</small>
+                </button>
+                <button type="button" class="quick-link-card" data-url="https://github.com">
+                  <span class="ql-icon">🐙</span>
+                  <strong>GitHub</strong>
+                  <small>Open Source Repositories</small>
+                </button>
+                <button type="button" class="quick-link-card" data-url="https://privacyguides.org">
+                  <span class="ql-icon">🛡️</span>
+                  <strong>Privacy Guides</strong>
+                  <small>Security & Self-Defense</small>
+                </button>
+              </div>
+
+              <!-- Guarantees Row -->
+              <div class="browser-guarantees-row">
+                <div class="b-guarantee-item">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                  <span>100% Native Web & Media</span>
+                </div>
+                <div class="b-guarantee-item">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="4.93" y1="4.93" x2="19.07" y2="19.07"/></svg>
+                  <span>Trackers & Beacons Purged</span>
+                </div>
+                <div class="b-guarantee-item">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                  <span>Chrome Extension Support</span>
+                </div>
+                <div class="b-guarantee-item">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z"/></svg>
+                  <span>Full Download Pipeline</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Native Chromium Multi-Tab Webviews Container (Desktop Mode) -->
+          <div class="browser-webviews-container" id="browserWebviewsContainer"></div>
+
+          <!-- Sandboxed Fallback iframe Container (Web-only Mode) -->
+          <iframe class="browser-iframe" id="browserIframe" sandbox="allow-scripts allow-forms allow-same-origin allow-popups allow-popups-to-escape-sandbox allow-top-navigation-by-user-activation allow-modals allow-downloads allow-presentation" style="display: none;" title="Aegis Private Browser Viewport"></iframe>
+        </div>
+
+        <!-- Draggable Split View Resizer Divider -->
+        <div class="browser-split-divider" id="browserSplitResizer" style="display: none;" title="Drag to resize split panes">
+          <div class="split-divider-handle"></div>
+        </div>
+
+        <!-- Secondary Split View Pane (Right pane) -->
+        <div class="browser-pane browser-secondary-pane" id="browserSecondaryPane" style="display: none;">
+          <div class="secondary-pane-toolbar">
+            <div class="secondary-toolbar-left">
+              <div class="secondary-pane-tag">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="12" height="12"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="12" y1="3" x2="12" y2="21"/></svg>
+                <span>PANE 2</span>
+              </div>
+              <form class="secondary-omnibox-form" id="browserSecondaryForm">
+                <input type="text" class="secondary-url-input" id="browserSecondaryUrlInput" placeholder="Search or type web address for split view..." spellcheck="false" autocomplete="off">
+              </form>
+            </div>
+            <div class="secondary-toolbar-actions">
+              <button type="button" class="btn-secondary-tool" id="btnSecondarySwap" title="Swap Left & Right Panes" aria-label="Swap Panes">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 16V4m0 0L3 8m4-4l4 4m6 4v12m0 0l4-4m-4 4l-4-4"/></svg>
+                <span>Swap</span>
+              </button>
+              <button type="button" class="btn-secondary-tool" id="btnSecondaryReload" title="Reload Secondary Tab" aria-label="Reload">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg>
+              </button>
+              <button type="button" class="btn-secondary-tool btn-secondary-close" id="btnSecondaryClose" title="Close Split View (Alt+S)" aria-label="Close Split View">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+              </button>
+            </div>
+          </div>
+          <div class="secondary-pane-viewport" id="browserSecondaryViewport">
+            <iframe class="browser-iframe secondary-iframe" id="browserSecondaryIframe" sandbox="allow-scripts allow-forms allow-same-origin allow-popups allow-popups-to-escape-sandbox allow-top-navigation-by-user-activation allow-modals allow-downloads allow-presentation" style="display: none;" title="Secondary Browser Viewport"></iframe>
+            <div class="secondary-start-placeholder" id="secondaryStartPlaceholder">
+              <div class="secondary-placeholder-content">
+                <div class="secondary-placeholder-icon">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" width="34" height="34"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="12" y1="3" x2="12" y2="21"/></svg>
+                </div>
+                <h4>Dual Browsing Side-by-Side</h4>
+                <p>Type any search term or URL above to load in this pane, or pick a quick shortcut:</p>
+                <div class="secondary-quick-chips">
+                  <button type="button" class="secondary-chip" data-url="https://en.wikipedia.org">📖 Wikipedia</button>
+                  <button type="button" class="secondary-chip" data-url="https://news.ycombinator.com">💬 Hacker News</button>
+                  <button type="button" class="secondary-chip" data-url="https://github.com">🐙 GitHub</button>
+                  <button type="button" class="secondary-chip" data-url="https://developer.mozilla.org">💻 MDN Docs</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 1-Click AI Page Summarizer Drawer -->
+      <aside class="page-summary-drawer" id="pageSummaryDrawer" style="display: none;" aria-label="AI Page Summary">
+        <div class="summary-drawer-header">
+          <div class="summary-header-brand">
+            <div class="summary-sparkle-badge">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+            </div>
+            <div>
+              <h3 class="summary-drawer-title" id="summaryDrawerTitle">AI Page Synthesis</h3>
+              <p class="summary-drawer-subtitle" id="summaryDrawerSubtitle">Key takeaways, TL;DR & insights</p>
+            </div>
+          </div>
+          <div class="summary-header-controls">
+            <span class="summary-engine-badge" id="summaryEngineBadge">Gemini / Offline NLP</span>
+            <button type="button" class="icon-btn-micro" id="btnCloseSummaryDrawer" title="Close Summary (Esc)" aria-label="Close Summary">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+            </button>
+          </div>
+        </div>
+
+        <div class="summary-drawer-body" id="summaryDrawerBody">
+          <!-- Loading State -->
+          <div class="summary-loading-state" id="summaryLoadingState" style="display: none;">
+            <div class="summary-spinner"></div>
+            <h4>Synthesizing Webpage Intelligence...</h4>
+            <p>Extracting core arguments, claims and fact clusters from the document.</p>
+          </div>
+
+          <!-- Active Content State -->
+          <div class="summary-content-state" id="summaryContentState">
+            <div class="summary-takeaways-box" id="summaryTakeawaysBox">
+              <div class="takeaways-header">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                <span>3 KEY TAKEAWAYS</span>
+              </div>
+              <ul class="summary-takeaways-list" id="summaryTakeawaysList">
+                <li>Click <strong>✨ Summarize</strong> on any open webpage to view key takeaways.</li>
+              </ul>
+            </div>
+
+            <div class="summary-section-label">Executive Brief</div>
+            <div class="summary-markdown-body" id="summaryMarkdownBody">
+              Open any website or search result and click <strong>✨ Summarize</strong> to generate an instant briefing.
+            </div>
+
+            <div class="summary-metadata-row" id="summaryMetadataRow">
+              <span class="summary-meta-item" id="summaryReadingTime">⏱️ ~2 min read</span>
+              <span class="summary-meta-item" id="summaryWordCount">📄 Ready to summarize</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="summary-drawer-footer">
+          <button type="button" class="btn-summary-action" id="btnCopySummary" title="Copy Summary to Clipboard">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+            <span>Copy Brief</span>
+          </button>
+          <button type="button" class="btn-summary-action primary" id="btnClipSummaryToNotes" title="Save Summary into Scratchpad Notes">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+            <span>Clip to Notes</span>
+          </button>
+        </div>
+      </aside>
+    </div>
+  </div>
+
+  <!-- Chrome Extensions Manager Modal -->
+  <div class="modal-backdrop" id="extensionsModalBackdrop" style="display: none;">
+    <div class="extensions-modal-card" role="dialog" aria-modal="true" aria-labelledby="extModalTitle">
+      <div class="extensions-modal-header">
+        <div class="extensions-header-title">
+          <span class="ext-header-icon">🧩</span>
+          <div>
+            <h3 id="extModalTitle">Chrome Extensions Manager</h3>
+            <p>Install and manage Chromium extensions for Aegis Private Browser</p>
+          </div>
+        </div>
+        <button type="button" class="icon-btn" id="btnCloseExtensionsModal" aria-label="Close Extensions Manager">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+      </div>
+
+      <div class="extensions-modal-body">
+        <!-- Developer / Unpacked Loader Toolbar -->
+        <div class="extensions-action-bar">
+          <button type="button" class="btn-primary-action" id="btnLoadUnpackedExtension">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/><line x1="12" y1="11" x2="12" y2="17"/><line x1="9" y1="14" x2="15" y2="14"/></svg>
+            <span>Load Unpacked Extension</span>
+          </button>
+          <div class="ext-hint-text">
+            <span>Supports unpacked Manifest V2 & V3 Chrome extensions directly from folder</span>
+          </div>
+        </div>
+
+        <!-- Active Installed Extensions Section -->
+        <div class="extensions-section">
+          <div class="ext-section-header">Installed Extensions</div>
+          <div class="extensions-installed-list" id="extensionsInstalledList">
+            <div class="empty-ext-msg">Scanning installed extensions...</div>
+          </div>
+        </div>
+
+        <!-- Featured Recommended Extensions Catalog -->
+        <div class="extensions-section">
+          <div class="ext-section-header">Popular Privacy & Productivity Extensions</div>
+          <div class="extensions-catalog-grid" id="extensionsCatalogGrid">
+            <!-- Rendered by JS from catalog -->
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Browser Footer & Creator Attribution -->
+  <footer class="aegis-app-footer">
+    <div class="footer-inner">
+      <span>Aegis Private Browser & Search</span>
+      <span class="footer-sep">&bull;</span>
+      <span>Created by <strong>Zeeshan Saeed</strong></span>
+      <span class="footer-sep">&bull;</span>
+      <span>Zero-Telemetry Architecture</span>
+      <span class="footer-sep">&bull;</span>
+      <button type="button" class="btn-footer-link" id="btnFooterAegisAbout">Aegis vs Google</button>
+    </div>
+  </footer>
+
+  <!-- About Aegis & Google Comparison Modal -->
+  <div class="modal-backdrop" id="aboutAegisModalBackdrop" style="display: none;">
+    <div class="modal-card about-aegis-card" role="dialog" aria-modal="true" aria-label="About Aegis & Comparison with Google">
+      <div class="modal-header">
+        <div class="modal-title-group">
+          <div class="privacy-badge-pill">
+            <span>SHIELD ARCHITECTURE</span>
+          </div>
+          <h2>About Aegis Private Search & Engine</h2>
+          <p class="modal-subtitle">Created & Engineered by <strong>Zeeshan Saeed</strong> as an autonomous zero-tracking alternative to Google.</p>
+        </div>
+        <button type="button" class="btn-close-modal" id="btnAboutAegisClose" aria-label="Close Dialog">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+      </div>
+
+      <div class="modal-body">
+        <div class="about-lead-text">
+          <p><strong>Aegis</strong> is a self-hosted, high-performance private search engine and standalone browser application created by <strong>Zeeshan Saeed</strong>. Designed from the ground up to eliminate surveillance capitalism, tracking pixels, and invasive profiling.</p>
+        </div>
+
+        <h3 style="font-size: 1rem; color: #f1f5f9; margin: 18px 0 10px;">Aegis vs. Google: Key Differences</h3>
+        
+        <div class="specs-table-wrapper">
+          <table class="specs-table">
+            <thead>
+              <tr>
+                <th>Feature / Dimension</th>
+                <th>Google Search & Chrome</th>
+                <th>Aegis (by Zeeshan Saeed)</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>User Profiling & Telemetry</strong></td>
+                <td>Permanent search history, IP tracking, ad ID profiling</td>
+                <td><strong style="color: #10b981;">Zero Logging:</strong> 100% volatile RAM memory model. No disk records.</td>
+              </tr>
+              <tr>
+                <td><strong>Web Browser</strong></td>
+                <td>Google Chrome (monitors user browsing & telemetry)</td>
+                <td><strong style="color: #10b981;">Built-in Sandboxed Browser:</strong> Real-time ad, cookie & tracker purge.</td>
+              </tr>
+              <tr>
+                <td><strong>Search Results & Ads</strong></td>
+                <td>Sponsored ads, paid tracking clicks, SEO farm spam</td>
+                <td><strong style="color: #10b981;">Zero Ads:</strong> Clean meta-aggregated results + BM25 local vault.</td>
+              </tr>
+              <tr>
+                <td><strong>AI Answer Synthesis</strong></td>
+                <td>Ad-monetized Gemini AI previews linked to Google Account</td>
+                <td><strong style="color: #10b981;">Perplexity-Style Cited AI:</strong> Local Ollama or offline NLP with 0 data storage.</td>
+              </tr>
+              <tr>
+                <td><strong>Creator & Ownership</strong></td>
+                <td>Alphabet Inc. (Commercial advertising conglomerate)</td>
+                <td><strong style="color: #10b981;">Zeeshan Saeed</strong> (Open-Source Privacy Engineering).</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <div style="font-family: var(--font-mono); font-size: 0.74rem; color: #10b981;">
+          <span>✓ Created by Zeeshan Saeed &bull; Open Source (MIT)</span>
+        </div>
+        <button type="button" class="btn-primary" id="btnAboutAegisDone">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Universal Command Palette Modal (Ctrl+K) -->
+  <div class="modal-backdrop cmd-palette-backdrop" id="commandPaletteModalBackdrop" style="display: none;">
+    <div class="cmd-palette-card" role="dialog" aria-modal="true" aria-label="Universal Command Palette">
+      <div class="cmd-palette-search-wrapper">
+        <svg class="cmd-palette-search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+          <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+        </svg>
+        <input type="text" id="cmdPaletteInput" class="cmd-palette-input" placeholder="Type a command, search bangs, or jump to a tool (e.g. browser, pw, !gh)..." autocomplete="off" spellcheck="false">
+        <button type="button" class="cmd-palette-esc-badge" id="btnCmdPaletteClose" title="Close (Esc)">ESC</button>
+      </div>
+
+      <div class="cmd-palette-results" id="cmdPaletteResults" role="listbox">
+        <!-- Dynamically rendered items with category headers -->
+      </div>
+
+      <div class="cmd-palette-footer">
+        <div class="cmd-palette-hints">
+          <span><kbd class="palette-kbd">&uarr;</kbd><kbd class="palette-kbd">&darr;</kbd> Navigate</span>
+          <span><kbd class="palette-kbd">&crarr;</kbd> Execute</span>
+          <span><kbd class="palette-kbd">ESC</kbd> Close</span>
+        </div>
+        <span class="cmd-palette-tag">Aegis Spotlight</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Floating Picture-in-Picture (PiP) Video Mini Player -->
+  <div class="pip-floating-player" id="pipFloatingPlayer" style="display: none;" role="region" aria-label="Picture-in-Picture Video Player">
+    <div class="pip-header" id="pipDragHeader">
+      <div class="pip-title-info">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><rect x="12" y="9" width="8" height="6" rx="1" ry="1"/></svg>
+        <span class="pip-title-text" id="pipTitleText">Picture-in-Picture</span>
+      </div>
+      <div class="pip-actions">
+        <button type="button" class="pip-btn" id="btnPipReturn" title="Return to Tab">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="12" height="12"><path d="M15 3h6v6"/><path d="M10 14L21 3"/><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/></svg>
+        </button>
+        <button type="button" class="pip-btn" id="btnPipClose" title="Close PiP Player">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="12" height="12"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+      </div>
+    </div>
+    <div class="pip-media-wrapper" id="pipMediaWrapper">
+      <video id="pipActiveVideo" autoplay playsinline controls></video>
+      <div class="pip-empty-placeholder" id="pipEmptyPlaceholder" style="display: none;">
+        <span>No media playing</span>
+      </div>
+    </div>
+  <!-- Time Machine & Web History Modal -->
+  <div class="modal-backdrop" id="timeMachineModalBackdrop" style="display: none;">
+    <div class="time-machine-card" role="dialog" aria-modal="true" aria-labelledby="timeMachineTitle">
+      <div class="time-machine-header">
+        <div class="time-machine-brand">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+          <h2 id="timeMachineTitle">Aegis Time Machine & Historical Archives</h2>
+        </div>
+        <button class="icon-btn" id="btnCloseTimeMachine" aria-label="Close Time Machine">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+      </div>
+      <div class="time-machine-body">
+        <div class="time-machine-url-bar">
+          <span class="tm-url-label">Target:</span>
+          <span class="tm-url-text" id="timeMachineTargetUrl">https://example.com</span>
+        </div>
+        <div class="time-machine-status-box" id="timeMachineStatusBox">
+          <div class="tm-loading-state" id="timeMachineLoading">
+            <div class="spinner-sm"></div>
+            <span>Querying Internet Archive Wayback Machine...</span>
+          </div>
+          <div class="tm-result-state" id="timeMachineResult" style="display: none;">
+            <div class="tm-snapshot-card">
+              <div class="tm-snapshot-meta">
+                <span class="tm-badge" id="timeMachineBadge">Archived Snapshot Available</span>
+                <strong class="tm-date" id="timeMachineDate">May 14, 2024 at 12:44 UTC</strong>
+              </div>
+              <p class="tm-snapshot-desc" id="timeMachineDesc">Verified historical record preserved in the Internet Archive.</p>
+              <div class="tm-actions-row">
+                <button type="button" class="btn-primary" id="btnOpenWaybackInBrowser">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+                  <span>Open Snapshot in Aegis</span>
+                </button>
+                <a href="#" target="_blank" rel="noopener noreferrer" class="btn-secondary" id="btnOpenWaybackDirect">
+                  <span>Open on Archive.org</span>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- Alternative Archive Mirrors -->
+        <div class="time-machine-alternatives">
+          <h4>Alternative Web Archive Mirrors</h4>
+          <div class="tm-alt-grid">
+            <a href="#" target="_blank" rel="noopener noreferrer" class="tm-alt-link" id="linkArchiveToday">
+              <strong>Archive.today</strong>
+              <small>Bypasses paywalls & anti-bot traps</small>
+            </a>
+            <a href="#" target="_blank" rel="noopener noreferrer" class="tm-alt-link" id="linkWaybackCalendar">
+              <strong>Wayback Calendar</strong>
+              <small>Browse all historical captures by year</small>
+            </a>
+            <a href="#" target="_blank" rel="noopener noreferrer" class="tm-alt-link" id="linkGoogleCache">
+              <strong>Google Cache Mirror</strong>
+              <small>Recent text & full page cache</small>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Floating Web Highlighter & Page Annotator Toolbar -->
+  <div class="aegis-highlighter-toolbar" id="aegisHighlighterToolbar" style="display: none;" role="toolbar" aria-label="Highlighter Toolbar">
+    <div class="hl-swatches">
+      <button type="button" class="hl-swatch hl-yellow" data-color="yellow" title="Highlight Yellow"></button>
+      <button type="button" class="hl-swatch hl-emerald" data-color="emerald" title="Highlight Emerald"></button>
+      <button type="button" class="hl-swatch hl-cyan" data-color="cyan" title="Highlight Cyan"></button>
+      <button type="button" class="hl-swatch hl-magenta" data-color="magenta" title="Highlight Magenta"></button>
+    </div>
+    <div class="hl-divider"></div>
+    <button type="button" class="hl-btn" id="btnHlAddNote" title="Attach Marginal Note">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="13" height="13"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+      <span>Note</span>
+    </button>
+    <button type="button" class="hl-btn" id="btnHlClipScratchpad" title="Send Quote to Scratchpad">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="13" height="13"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><rect x="8" y="2" width="8" height="4" rx="1" ry="1"/></svg>
+      <span>Clip</span>
+    </button>
+    <button type="button" class="hl-btn hl-dismiss" id="btnHlDismiss" title="Dismiss">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="12" height="12"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+    </button>
+  </div>
+
+  <!-- Toast Notification Container -->
+  <div class="toast-container" id="toastContainer" aria-live="polite"></div>
+
+  <script src="app.js"></script>
+</body>
+</html>
