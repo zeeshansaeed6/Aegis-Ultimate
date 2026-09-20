@@ -233,7 +233,7 @@ async function handleBrowserSearch(req, res) {
               <p class="entry-snippet">${escapeHtml(item.snippet || '')}</p>
               <div class="entry-actions">
                 <a href="${proxyHref}" class="action-btn" data-real-url="${escapeHtml(targetUrl)}">🛡️ Open Sandboxed</a>
-                <a href="${escapeHtml(targetUrl)}" target="_blank" rel="noopener noreferrer" class="action-btn action-ext">↗️ External Tab</a>
+                <a href="${escapeHtml(targetUrl)}" target="_blank" rel="noopener noreferrer" class="action-btn action-ext no-intercept" data-real-url="${escapeHtml(targetUrl)}" onclick="try{window.open('${escapeHtml(targetUrl)}','_blank','noopener,noreferrer');return false;}catch(e){}">↗️ Official Website</a>
               </div>
             </article>
           `;

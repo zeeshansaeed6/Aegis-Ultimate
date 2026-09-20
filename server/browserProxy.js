@@ -25,7 +25,8 @@ const TRACKING_PATTERNS = [
   'connect.facebook.net', 'facebook.com/tr', 'analytics.twitter.com',
   'hotjar.com', 'clarity.ms', 'criteo.net', 'outbrain.com', 'taboola.com',
   'segment.com', 'amplitude.com', 'mixpanel.com', 'scorecardresearch.com',
-  'doubleclick.net', 'adservice.google.com', 'adroll.com'
+  'doubleclick.net', 'adservice.google.com', 'adroll.com',
+  'akam/13/', 'ak_bmsc'
 ];
 
 /**
@@ -909,6 +910,22 @@ function isBotChallengeResponse(status, headers, html) {
     };
   }
 
+  // 5. Akamai Bot Manager / Edge Challenge
+  const isAkamai =
+    (status === 403 || status === 429) && (
+      lower.includes('access denied') && (lower.includes('reference #') || lower.includes('akamai')) ||
+      lower.includes('ak_bmsc')
+    );
+  if (isAkamai) {
+    return {
+      type: 'akamai',
+      badge: 'AKAMAI EDGE PROTECTION',
+      title: 'Akamai Edge Verification Required',
+      headline: 'Akamai Bot Protection Active',
+      desc: 'This website is protected by Akamai edge security which prohibits embedded proxy frames. Open directly in an external browser window.'
+    };
+  }
+
   return null;
 }
 
@@ -1570,6 +1587,20 @@ async function handleBrowserProxy(req, res) {
     req.query.lens = parsedUrl.searchParams.get('lens') || 'all';
     req.query.tabId = tabId;
     return handleBrowserSearch(req, res);
+  }
+
+  // Intercept Google Search and Google Sorry pages to prevent cloud IP 429 blocks & Chinese CAPTCHAs
+  if (parsedUrl.hostname.includes('google.') && (parsedUrl.pathname.startsWith('/search') || parsedUrl.pathname.startsWith('/sorry') || cleanUrl.includes('google.com/search') || cleanUrl.includes('google.com/sorry'))) {
+    let qParam = parsedUrl.searchParams.get('q') || parsedUrl.searchParams.get('query') || '';
+    if (!qParam && cleanUrl.includes('continue=')) {
+      try {
+        const continueUrl = new URL(decodeURIComponent(parsedUrl.searchParams.get('continue') || ''));
+        qParam = continueUrl.searchParams.get('q') || '';
+      } catch(e) {}
+    }
+    if (qParam) {
+      return res.redirect(`/browser/search?tabId=${encodeURIComponent(tabId)}&q=${encodeURIComponent(qParam)}`);
+    }
   }
 
   // SSRF Protection

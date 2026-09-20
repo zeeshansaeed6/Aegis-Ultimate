@@ -83,10 +83,11 @@ async function searchBing(query, options = {}) {
     const timeout = setTimeout(() => controller.abort(), 6000);
 
     const q = encodeURIComponent(query);
-    const url = `https://www.bing.com/search?q=${q}&count=15&setlang=en`;
+    const url = `https://www.bing.com/search?q=${q}&count=15&setlang=en&cc=US`;
 
     const res = await fetch(url, {
       headers: {
+        ...CLIENT_HEADERS,
         'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36',
         'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
         'Accept-Language': 'en-US,en;q=0.9',
@@ -147,7 +148,7 @@ async function searchGoogle(query, options = {}) {
     const controller = new AbortController();
     const timeout = setTimeout(() => controller.abort(), 8000);
 
-    let url = `https://www.google.com/search?q=${encodeURIComponent(query)}&num=15&hl=en`;
+    let url = `https://www.google.com/search?q=${encodeURIComponent(query)}&num=15&hl=en&gl=us&pws=0`;
     // Time filter mapping: d=past day, w=past week, m=past month, y=past year
     if (timeFilter) {
       const tbs = timeFilter === 'd' ? 'qdr:d' : timeFilter === 'w' ? 'qdr:w' : timeFilter === 'm' ? 'qdr:m' : timeFilter === 'y' ? 'qdr:y' : '';
@@ -170,7 +171,7 @@ async function searchGoogle(query, options = {}) {
     });
 
     clearTimeout(timeout);
-    if (!res.ok) return [];
+    if (!res.ok || res.status === 429 || (res.url && res.url.includes('google.com/sorry'))) return [];
 
     const html = await res.text();
     const $ = cheerio.load(html);
@@ -254,6 +255,7 @@ async function searchDuckDuckGo(query, options = {}) {
     let queryParams = `q=${encodeURIComponent(query)}`;
     if (timeFilter) queryParams += `&df=${encodeURIComponent(timeFilter)}`;
     if (region && region !== 'wt-wt') queryParams += `&kl=${encodeURIComponent(region)}`;
+    else queryParams += '&kl=us-en';
     if (safeSearch) queryParams += `&kp=${encodeURIComponent(safeSearch)}`;
 
     const res = await fetch(`https://html.duckduckgo.com/html/?${queryParams}`, {
@@ -595,6 +597,15 @@ async function aggregateSearch(query, category = 'all', options = {}) {
     if (filteredByLens.length > 0) {
       aggregated = filteredByLens;
     }
+  }
+
+  // 4. Filter out any unexpected foreign/CJK results if query is in English / Latin characters
+  const isCjkQuery = /[\u4e00-\u9fa5\u3040-\u30ff\u3400-\u4dbf]/.test(query);
+  if (!isCjkQuery) {
+    aggregated = aggregated.filter(item => {
+      const cjkCount = ((item.title || '') + ' ' + (item.snippet || '')).match(/[\u4e00-\u9fa5]/g)?.length || 0;
+      return cjkCount < 3;
+    });
   }
 
   return aggregated;

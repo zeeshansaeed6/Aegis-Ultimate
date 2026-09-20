@@ -355,7 +355,7 @@
     bing: { id: 'bing', label: 'Bing', icon: '🅱️', placeholder: 'Search Bing privately (or type URL)...', resolve: q => `https://www.bing.com/search?q=${encodeURIComponent(q)}` },
     brave: { id: 'brave', label: 'Brave', icon: '🦁', placeholder: 'Search Brave privately (or type URL)...', resolve: q => `https://search.brave.com/search?q=${encodeURIComponent(q)}` },
     startpage: { id: 'startpage', label: 'SP', icon: '🌐', placeholder: 'Search Startpage (or type URL)...', resolve: q => `https://www.startpage.com/do/dsearch?query=${encodeURIComponent(q)}` },
-    google: { id: 'google', label: 'Google', icon: '🔍', placeholder: 'Search Google (or type URL)...', resolve: q => `https://www.google.com/search?q=${encodeURIComponent(q)}` },
+    google: { id: 'google', label: 'Google', icon: '🔍', placeholder: 'Search Google with Aegis Parity (or type URL)...', resolve: (q, tabId) => `/browser/search?tabId=${encodeURIComponent(tabId || '')}&q=${encodeURIComponent(q)}` },
     ddg: { id: 'ddg', label: 'DDG', icon: '🦆', placeholder: 'Search DuckDuckGo (or type URL)...', resolve: q => `https://html.duckduckgo.com/html/?q=${encodeURIComponent(q)}` },
     wikipedia: { id: 'wikipedia', label: 'Wiki', icon: '📖', placeholder: 'Search Wikipedia (or type URL)...', resolve: q => `https://en.wikipedia.org/wiki/Special:Search?search=${encodeURIComponent(q)}` },
     github: { id: 'github', label: 'GH', icon: '🐙', placeholder: 'Search GitHub Repos (or type URL)...', resolve: q => `https://github.com/search?q=${encodeURIComponent(q)}` },
@@ -369,8 +369,8 @@
     { prefix: '!gh', url: 'https://github.com/search?q=' },
     { prefix: '!b', url: 'https://www.bing.com/search?q=' },
     { prefix: '!bing', url: 'https://www.bing.com/search?q=' },
-    { prefix: '!g', url: 'https://www.google.com/search?q=' },
-    { prefix: '!google', url: 'https://www.google.com/search?q=' },
+    { prefix: '!g', url: '/browser/search?q=' },
+    { prefix: '!google', url: '/browser/search?q=' },
     { prefix: '!yt', url: 'https://www.youtube.com/results?search_query=' },
     { prefix: '!so', url: 'https://stackoverflow.com/nocache?q=' },
     { prefix: '!mdn', url: 'https://developer.mozilla.org/search?q=' },
@@ -846,10 +846,25 @@
         e.preventDefault();
         e.stopPropagation();
         const activeTab = getActiveBrowserTab();
-        const targetUrl = (activeTab && activeTab.url) ? activeTab.url : btnBrowserExternalLink.getAttribute('href');
-        if (targetUrl && (targetUrl.startsWith('http://') || targetUrl.startsWith('https://'))) {
-          createBrowserTab(targetUrl, activeTab?.title || 'New Tab');
-          showToast('Opened in new Aegis browser tab');
+        let targetUrl = (activeTab && activeTab.url) ? activeTab.url : btnBrowserExternalLink.getAttribute('href');
+        if (targetUrl) {
+          if (targetUrl.includes('/api/browser/proxy') || targetUrl.includes('/api/proxy')) {
+            try {
+              const parsed = new URL(targetUrl, location.origin);
+              const unwrapped = parsed.searchParams.get('url');
+              if (unwrapped && /^https?:\/\//i.test(unwrapped)) {
+                targetUrl = unwrapped;
+              }
+            } catch(err) {}
+          }
+          if (targetUrl.startsWith('http://') || targetUrl.startsWith('https://')) {
+            if (window.aegisDesktop && window.aegisDesktop.isDesktop && typeof window.aegisDesktop.openExternal === 'function') {
+              window.aegisDesktop.openExternal(targetUrl);
+            } else {
+              window.open(targetUrl, '_blank', 'noopener,noreferrer');
+            }
+            showToast('Opening official website in new window...');
+          }
         }
       });
     }
@@ -1775,7 +1790,7 @@
             ` : ''}
           </div>
 
-          <a href="${escapeHtml(item.url || '#')}" target="_blank" rel="noopener noreferrer" class="result-title-link">
+          <a href="${escapeHtml(item.url || '#')}" target="_blank" rel="noopener noreferrer" class="result-title-link no-intercept">
             ${escapeHtml(item.title)}
           </a>
 
@@ -4851,10 +4866,15 @@
     const href = anchor.getAttribute('href');
     if (!href || href.startsWith('#') || href.startsWith('javascript:')) return;
 
-    // Never intercept download links or specific internal UI action triggers
+    // Never intercept download links, explicit target="_blank", or specific internal UI action triggers
     if (
       anchor.hasAttribute('download') ||
-      anchor.closest('.no-intercept')
+      anchor.closest('.no-intercept') ||
+      anchor.classList.contains('result-title-link') ||
+      anchor.classList.contains('action-ext') ||
+      anchor.classList.contains('btn-open-external-pill') ||
+      anchor.id === 'btnBrowserExternalLink' ||
+      anchor.target === '_blank'
     ) {
       return;
     }

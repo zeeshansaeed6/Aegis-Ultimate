@@ -1,10 +1,10 @@
 {
-  "savedAt": "2026-09-20T02:12:37.936Z",
+  "savedAt": "2026-09-20T02:42:43.749Z",
   "documents": [
     [
       "https://aegis-search.internal/docs/architecture",
       {
-        "id": "native_79y4lz8",
+        "id": "native_zs4w7wu",
         "url": "https://aegis-search.internal/docs/architecture",
         "domain": "aegis-search.internal",
         "title": "Aegis Search Engine Architecture & Design",
@@ -18,14 +18,14 @@
         "wordCount": 32,
         "docLength": 49,
         "favicon": "",
-        "crawledAt": "2026-09-20T02:12:37.935Z",
+        "crawledAt": "2026-09-20T02:42:43.748Z",
         "outgoingLinks": []
       }
     ],
     [
       "https://expressjs.com/en/guide/routing.html",
       {
-        "id": "native_oxbjb8u",
+        "id": "native_3hp53f2",
         "url": "https://expressjs.com/en/guide/routing.html",
         "domain": "expressjs.com",
         "title": "Express.js Routing and Middleware Guide",
@@ -39,14 +39,14 @@
         "wordCount": 43,
         "docLength": 50,
         "favicon": "",
-        "crawledAt": "2026-09-20T02:12:37.936Z",
+        "crawledAt": "2026-09-20T02:42:43.749Z",
         "outgoingLinks": []
       }
     ],
     [
       "https://developer.mozilla.org/en-US/docs/Web/Privacy",
       {
-        "id": "native_tjwfspg",
+        "id": "native_99wvtkn",
         "url": "https://developer.mozilla.org/en-US/docs/Web/Privacy",
         "domain": "developer.mozilla.org",
         "title": "MDN Web Docs: Privacy and Security in Web Applications",
@@ -60,14 +60,14 @@
         "wordCount": 33,
         "docLength": 54,
         "favicon": "",
-        "crawledAt": "2026-09-20T02:12:37.936Z",
+        "crawledAt": "2026-09-20T02:42:43.749Z",
         "outgoingLinks": []
       }
     ],
     [
       "https://doc.rust-lang.org/book/ch01-01-installation.html",
       {
-        "id": "native_o7vceeb",
+        "id": "native_tlhryyy",
         "url": "https://doc.rust-lang.org/book/ch01-01-installation.html",
         "domain": "doc.rust-lang.org",
         "title": "The Rust Programming Language: Getting Started and Safety",
@@ -81,7 +81,7 @@
         "wordCount": 31,
         "docLength": 52,
         "favicon": "",
-        "crawledAt": "2026-09-20T02:12:37.936Z",
+        "crawledAt": "2026-09-20T02:42:43.749Z",
         "outgoingLinks": []
       }
     ]
