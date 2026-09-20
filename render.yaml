@@ -1,0 +1,12 @@
+services:
+  - type: web
+    name: aegis-ultimate
+    env: node
+    plan: free
+    buildCommand: npm install --omit=dev
+    startCommand: node server/server.js
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 10000
