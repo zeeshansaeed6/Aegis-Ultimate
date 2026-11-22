@@ -11,7 +11,7 @@
 
   <!-- Progressive Web App & Standalone Desktop Manifest -->
   <link rel="manifest" href="/manifest.webmanifest">
-  <meta name="theme-color" content="#0b0f19">
+  <meta name="theme-color" content="#0f1114">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="apple-mobile-web-app-title" content="Aegis Search">
@@ -52,9 +52,10 @@
   <!-- Modern Typography from Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Outfit:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500..800&family=Instrument+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
   
   <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="theme.css">
   <link rel="icon" type="image/png" href="/favicon.png">
   <link rel="apple-touch-icon" href="/app-icon.png">
 </head>
@@ -64,7 +65,7 @@
     <div class="desktop-titlebar-drag">
       <div class="desktop-titlebar-brand">
         <img src="/app-icon.png" class="desktop-titlebar-icon" alt="" width="16" height="16">
-        <span class="desktop-brand-title">Aegis Ultimate &bull; Sovereign Browser & Search</span>
+        <span class="desktop-brand-title">Aegis</span>
       </div>
     </div>
     <div class="desktop-titlebar-controls">
@@ -93,8 +94,8 @@
             <img src="/app-icon.png" class="brand-logo-img" alt="Aegis Ultimate Logo">
           </div>
           <div class="brand-text">
-            <span class="brand-name">AEGIS</span>
-            <span class="brand-tag">ULTIMATE</span>
+            <span class="brand-name">Aegis</span>
+            <span class="brand-tag">Ultimate</span>
           </div>
         </a>
       </div>
@@ -109,7 +110,7 @@
 
         <button class="privacy-hud-pill" id="btnPrivacyLabToggle" title="Open Live Privacy Lab & Fingerprint Auditor">
           <span class="pulse-indicator"></span>
-          <span class="hud-label">Privacy Lab: <strong>AUDIT</strong></span>
+          <span class="hud-label">Privacy lab</span>
           <span class="hud-stat" id="hudTrackersCount">0 blocked</span>
         </button>
 
@@ -181,20 +182,8 @@
     <!-- Hero / Search Section -->
     <section class="search-hero" id="searchHero">
       <div class="hero-center-box" id="heroCenterBox">
-        <div class="hero-brand-emblem-wrap">
-          <img src="/brand-logo.png" class="hero-brand-emblem" alt="Aegis Ultimate Emblem">
-        </div>
-        <div class="hero-minimal-badge" id="heroBadge">
-          <span class="hero-badge-pulse"></span>
-          <span>ZERO-TELEMETRY &bull; SOVEREIGN SEARCH</span>
-        </div>
-
-        <h1 class="hero-title" id="heroTitle">
-          Search the web <span class="gradient-text">without compromise</span>
-        </h1>
-        <p class="hero-subtitle">
-          Pure zero-tracking search engine &bull; Perplexity-style AI &bull; Isolated streaming proxy
-        </p>
+        <h1 class="hero-title" id="heroTitle">Search that doesn&rsquo;t follow you home.</h1>
+        <p class="hero-subtitle">No account, no query log, no trackers in the results. Pages open in an isolated reader, and your notes and documents stay on this machine.</p>
 
         <!-- Search Bar Form -->
         <form class="search-form-wrapper" id="searchForm" role="search">
@@ -209,7 +198,7 @@
 
               <!-- Lens Dropdown Menu -->
               <div class="lens-dropdown-menu" id="lensDropdownMenu" style="display: none;">
-                <div class="lens-dropdown-header">Focus Lenses (Kagi-Style)</div>
+                <div class="lens-dropdown-header">Focus lenses</div>
                 <div class="lens-option active" data-lens="all">
                   <span class="lens-icon">🌐</span>
                   <div class="lens-details">
@@ -368,7 +357,7 @@
 
         <!-- Popular Bang Quick-Pills (Minimalist single row) -->
         <div class="quick-bangs-row" id="quickBangsRow">
-          <span class="bangs-label">Quick:</span>
+          <span class="bangs-label">Shortcuts</span>
           <button type="button" class="bang-chip" data-bang="!w "><strong>!w</strong> Wikipedia</button>
           <button type="button" class="bang-chip" data-bang="!gh "><strong>!gh</strong> GitHub</button>
           <button type="button" class="bang-chip" data-bang="!hn "><strong>!hn</strong> HackerNews</button>
@@ -603,7 +592,7 @@
         <h2>Research Scratchpad</h2>
       </div>
       <div class="scratchpad-actions-top">
-        <button type="button" class="btn-action-pill" id="btnScratchpadSyncHighlights" title="Sync all web & reader highlights into notes" style="color: #10b981; border-color: rgba(16, 185, 129, 0.3);">✨ Highlights</button>
+        <button type="button" class="btn-action-pill" id="btnScratchpadSyncHighlights" title="Sync all web & reader highlights into notes" style="color: #d2a85a; border-color: rgba(210, 168, 90, 0.3);">✨ Highlights</button>
         <button type="button" class="btn-action-pill" id="btnScratchpadToVault" title="Save this note into BM25 Local Vault">Index to Vault</button>
         <button type="button" class="btn-action-pill" id="btnExportMarkdownNote" title="Download .md file">Export .md</button>
         <button class="icon-btn" id="btnCloseScratchpad" title="Close Scratchpad" aria-label="Close Scratchpad">
@@ -740,7 +729,7 @@
               <button type="button" class="btn-action-pill" id="btnExtractImageOcr" title="Extract text from image using client-side OCR">Extract Text (Lens 2.0 OCR)</button>
             </div>
             <div id="exifOcrContainer" style="display: none; margin-top: 12px; background: rgba(0,0,0,0.3); border-radius: 8px; padding: 10px; font-size: 0.82rem; border: 1px solid rgba(56, 189, 248, 0.2);">
-              <strong style="color: #38bdf8; display: block; margin-bottom: 4px;">Extracted Text:</strong>
+              <strong style="color: #9cc6d0; display: block; margin-bottom: 4px;">Extracted Text:</strong>
               <div id="exifOcrText" style="margin: 6px 0; white-space: pre-wrap; color: var(--text-primary); font-family: var(--font-mono); max-height: 120px; overflow-y: auto;"></div>
               <button type="button" class="btn-clean-mini" id="btnSearchOcrText" style="margin-top: 6px;">Search Extracted Text</button>
             </div>
@@ -846,7 +835,7 @@
         <div id="vaultPasswordLockedState">
           <div class="vault-lock-hero">
             <div class="lock-shield-icon">🔐</div>
-            <h3>Sovereign AES-256 Encrypted Keyring</h3>
+            <h3>Encrypted password keyring</h3>
             <p class="vault-desc">Your credentials are encrypted in local memory using AES-GCM-256 with PBKDF2 key derivation (100,000 rounds). Your master passphrase is never sent to any server.</p>
           </div>
           <form class="vault-lock-form" id="vaultMasterUnlockForm">
@@ -903,7 +892,7 @@
 
       <div class="settings-modal-body">
         <div class="settings-nav-tabs">
-          <button class="settings-tab-btn active" data-tab="tabAi">AI Synthesizer</button>
+          <button class="settings-tab-btn active" data-tab="tabAi">AI answers</button>
           <button class="settings-tab-btn" data-tab="tabLenses">Focus Lenses</button>
           <button class="settings-tab-btn" data-tab="tabSpam">Domain Filter</button>
           <button class="settings-tab-btn" data-tab="tabTor">Tor / Onion</button>
@@ -914,7 +903,7 @@
         <div class="settings-tab-content">
           <!-- Tab 1: AI Config -->
           <div class="settings-pane active" id="paneAi">
-            <h3>Perplexity-Style AI Engine</h3>
+            <h3>AI answers</h3>
             <p class="settings-desc">Choose how search result summaries are generated. Keys are stored solely in your local browser sandbox.</p>
 
             <div class="form-group">
@@ -978,7 +967,7 @@
             <h3>Tor & Onion Network Connectivity</h3>
             <p class="settings-desc">Check your local Tor daemon connection (port 9050 or 9150) for anonymous multi-hop onion routing.</p>
             <div class="tor-status-card" id="torStatusCard">
-              <div class="pulse-indicator" style="background: #fbbf24;"></div>
+              <div class="pulse-indicator" style="background: #e6c88a;"></div>
               <span id="torStatusText">Checking Tor status...</span>
             </div>
             <button type="button" class="btn-action-pill" id="btnRefreshTor" style="margin-top: 14px;">Recheck Tor Connection</button>
@@ -1021,7 +1010,7 @@
               <label for="linkOpenModeSelect" style="display: block; font-weight: 600; margin-bottom: 6px; color: var(--text-primary);">Search Result Link Destination</label>
               <p class="settings-desc" style="margin-bottom: 10px;">Choose how search results and web links behave when clicked.</p>
               <select id="linkOpenModeSelect" class="settings-select" style="width: 100%; max-width: 480px; padding: 10px; background: rgba(0,0,0,0.5); border: 1px solid rgba(255,255,255,0.15); border-radius: 8px; color: #fff;">
-                <option value="direct">Open in New Tab (100% Native Web Compatibility & Google Logins)</option>
+                <option value="direct">Open in a new tab (full site compatibility, Google logins work)</option>
                 <option value="sandboxed">Open inside Aegis Sandboxed Private Browser</option>
               </select>
             </div>
@@ -1546,9 +1535,9 @@
           </button>
 
           <!-- 1-Click AI Page Summarizer -->
-          <button type="button" class="browser-util-btn btn-ai-summarize-pill" id="btnSummarizePage" title="✨ AI Page Summarizer: Generate Instant TL;DR & Insights (Alt+Z)" aria-label="Summarize Page">
+          <button type="button" class="browser-util-btn btn-ai-summarize-pill" id="btnSummarizePage" title="AI page summarizer: Generate Instant TL;DR & Insights (Alt+Z)" aria-label="Summarize Page">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-            <span>✨ Summarize</span>
+            <span>Summarize</span>
           </button>
 
           <!-- 1-Click Time Machine Archive Lookup -->
@@ -1711,12 +1700,9 @@
           <!-- Built-in Start / New Tab Page -->
           <div class="browser-start-page" id="browserStartPage">
             <div class="start-page-content">
-              <div class="start-brand-badge">
-                <img src="/app-icon.png" class="start-brand-icon" alt="" width="20" height="20">
-                <span>AEGIS ULTIMATE BROWSER</span>
-              </div>
-              <h2>Browse with <span class="gradient-text">Complete Freedom & Protection</span></h2>
-              <p class="start-subtitle">Every website, video, and web app functions 100% natively without broken buttons or blocked elements, powered by an isolated Chromium runtime with zero tracking.</p>
+              
+              <h2>A new tab that keeps to itself.</h2>
+              <p class="start-subtitle">Pages load in an isolated Chromium runtime. Trackers and beacons are stripped before they reach you.</p>
 
               <!-- Quick Jump Bookmark Cards -->
               <div class="browser-quick-links-grid">
@@ -1756,7 +1742,7 @@
               <div class="browser-guarantees-row">
                 <div class="b-guarantee-item">
                   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-                  <span>100% Native Web & Media</span>
+                  <span>Native web and media</span>
                 </div>
                 <div class="b-guarantee-item">
                   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="4.93" y1="4.93" x2="19.07" y2="19.07"/></svg>
@@ -1868,13 +1854,13 @@
                 <span>3 KEY TAKEAWAYS</span>
               </div>
               <ul class="summary-takeaways-list" id="summaryTakeawaysList">
-                <li>Click <strong>✨ Summarize</strong> on any open webpage to view key takeaways.</li>
+                <li>Click <strong>Summarize</strong> on any open webpage to view key takeaways.</li>
               </ul>
             </div>
 
             <div class="summary-section-label">Executive Brief</div>
             <div class="summary-markdown-body" id="summaryMarkdownBody">
-              Open any website or search result and click <strong>✨ Summarize</strong> to generate an instant briefing.
+              Open any website or search result and click <strong>Summarize</strong> to generate an instant briefing.
             </div>
 
             <div class="summary-metadata-row" id="summaryMetadataRow">
@@ -1948,11 +1934,11 @@
   <!-- Browser Footer & Creator Attribution -->
   <footer class="aegis-app-footer">
     <div class="footer-inner">
-      <span>Aegis Private Browser & Search</span>
+      <span>Aegis private search and browser</span>
       <span class="footer-sep">&bull;</span>
       <span>Created by <strong>Zeeshan Saeed</strong></span>
       <span class="footer-sep">&bull;</span>
-      <span>Zero-Telemetry Architecture</span>
+      <span>No telemetry</span>
       <span class="footer-sep">&bull;</span>
       <button type="button" class="btn-footer-link" id="btnFooterAegisAbout">Aegis vs Google</button>
     </div>
@@ -1994,27 +1980,27 @@
               <tr>
                 <td><strong>User Profiling & Telemetry</strong></td>
                 <td>Permanent search history, IP tracking, ad ID profiling</td>
-                <td><strong style="color: #10b981;">Zero Logging:</strong> 100% volatile RAM memory model. No disk records.</td>
+                <td><strong style="color: #d2a85a;">Zero Logging:</strong> 100% volatile RAM memory model. No disk records.</td>
               </tr>
               <tr>
                 <td><strong>Web Browser</strong></td>
                 <td>Google Chrome (monitors user browsing & telemetry)</td>
-                <td><strong style="color: #10b981;">Built-in Sandboxed Browser:</strong> Real-time ad, cookie & tracker purge.</td>
+                <td><strong style="color: #d2a85a;">Built-in Sandboxed Browser:</strong> Real-time ad, cookie & tracker purge.</td>
               </tr>
               <tr>
                 <td><strong>Search Results & Ads</strong></td>
                 <td>Sponsored ads, paid tracking clicks, SEO farm spam</td>
-                <td><strong style="color: #10b981;">Zero Ads:</strong> Clean meta-aggregated results + BM25 local vault.</td>
+                <td><strong style="color: #d2a85a;">Zero Ads:</strong> Clean meta-aggregated results + BM25 local vault.</td>
               </tr>
               <tr>
                 <td><strong>AI Answer Synthesis</strong></td>
                 <td>Ad-monetized Gemini AI previews linked to Google Account</td>
-                <td><strong style="color: #10b981;">Perplexity-Style Cited AI:</strong> Local Ollama or offline NLP with 0 data storage.</td>
+                <td><strong style="color: #d2a85a;">Perplexity-Style Cited AI:</strong> Local Ollama or offline NLP with 0 data storage.</td>
               </tr>
               <tr>
                 <td><strong>Creator & Ownership</strong></td>
                 <td>Alphabet Inc. (Commercial advertising conglomerate)</td>
-                <td><strong style="color: #10b981;">Zeeshan Saeed</strong> (Open-Source Privacy Engineering).</td>
+                <td><strong style="color: #d2a85a;">Zeeshan Saeed</strong> (Open-Source Privacy Engineering).</td>
               </tr>
             </tbody>
           </table>
@@ -2022,7 +2008,7 @@
       </div>
 
       <div class="modal-footer">
-        <div style="font-family: var(--font-mono); font-size: 0.74rem; color: #10b981;">
+        <div style="font-family: var(--font-mono); font-size: 0.74rem; color: #d2a85a;">
           <span>✓ Created by Zeeshan Saeed &bull; Open Source (MIT)</span>
         </div>
         <button type="button" class="btn-primary" id="btnAboutAegisDone">Close</button>

@@ -4,8 +4,8 @@
   "description": "Zero-tracking, high-performance private search engine, BM25 vault, and sandboxed browser",
   "start_url": "/",
   "display": "standalone",
-  "background_color": "#0b0f19",
-  "theme_color": "#0b0f19",
+  "background_color": "#0f1114",
+  "theme_color": "#0f1114",
   "orientation": "any",
   "categories": ["utilities", "productivity", "security"],
   "icons": [

@@ -1250,7 +1250,7 @@
           inList = false;
         }
         const title = escapeHtml(trimmed.replace(/^###\s*/, ''));
-        html += `<h4 style="color: #c084fc; margin: 14px 0 8px; font-size: 1.05rem; font-weight: 600;">${title}</h4>`;
+        html += `<h4 style="color: #b3abdc; margin: 14px 0 8px; font-size: 1.05rem; font-weight: 600;">${title}</h4>`;
         continue;
       }
 
@@ -2706,7 +2706,7 @@
           <div class="instant-card instant-calculator-widget">
             <div class="instant-card-header">
               <span class="instant-badge">${escapeHtml(answer.badge)}</span>
-              <span class="instant-subtext">Google-Grade Interactive Math Studio</span>
+              <span class="instant-subtext">Calculator</span>
             </div>
             <div class="calc-screen">
               <div class="calc-screen-expr" id="calcScreenExpr">${escapeHtml(answer.expression || '')}</div>
@@ -2895,7 +2895,7 @@
           </div>
           <div class="currency-row">
             <div class="currency-amount-large">${escapeHtml(answer.result)}</div>
-            <div class="instant-subtext" style="font-family: var(--font-mono); font-size: 0.88rem; color: #34d399; margin-top: 4px;">${escapeHtml(answer.rateInfo || '')}</div>
+            <div class="instant-subtext" style="font-family: var(--font-mono); font-size: 0.88rem; color: #e6c88a; margin-top: 4px;">${escapeHtml(answer.rateInfo || '')}</div>
           </div>
         </div>
       `;
@@ -2962,7 +2962,7 @@
         <tr>
           <td><strong>${escapeHtml(c.feature)}</strong></td>
           <td style="color: #94a3b8;">${escapeHtml(c.google)}</td>
-          <td style="color: #34d399; font-weight: 500;">${escapeHtml(c.aegis)}</td>
+          <td style="color: #e6c88a; font-weight: 500;">${escapeHtml(c.aegis)}</td>
         </tr>
       `).join('');
 
@@ -2995,7 +2995,7 @@
             </table>
           </div>
 
-          <div style="font-family: var(--font-mono); font-size: 0.76rem; color: #10b981;">
+          <div style="font-family: var(--font-mono); font-size: 0.76rem; color: #d2a85a;">
             <span>✓ ${escapeHtml(answer.attribution)}</span>
           </div>
         </div>
@@ -3011,7 +3011,7 @@
           <div class="instant-password-row">
             <span class="instant-password-text" id="instantPasswordTextVal">${escapeHtml(answer.password)}</span>
             <button type="button" class="instant-btn-copy" id="btnCopyPassword">Copy</button>
-            <button type="button" class="instant-btn-copy" id="btnRegenPassword" style="background: rgba(16, 185, 129, 0.2); color: #34d399;" title="Generate new password">↺ New</button>
+            <button type="button" class="instant-btn-copy" id="btnRegenPassword" style="background: rgba(210, 168, 90, 0.2); color: #e6c88a;" title="Generate new password">↺ New</button>
           </div>
           <p class="instant-subtext">${escapeHtml(answer.description)}</p>
         </div>
@@ -3020,7 +3020,7 @@
       html = `
         <div class="instant-card">
           <div class="instant-card-header">
-            <span class="instant-badge" style="background: ${answer.status === 'valid' ? 'rgba(16, 185, 129, 0.15)' : 'rgba(239, 68, 68, 0.15)'}; color: ${answer.status === 'valid' ? 'var(--accent-emerald)' : '#ef4444'};">${escapeHtml(answer.badge)}</span>
+            <span class="instant-badge" style="background: ${answer.status === 'valid' ? 'rgba(210, 168, 90, 0.15)' : 'rgba(239, 68, 68, 0.15)'}; color: ${answer.status === 'valid' ? 'var(--accent-emerald)' : '#ef4444'};">${escapeHtml(answer.badge)}</span>
             <span class="instant-subtext">${answer.status === 'valid' ? `${answer.keysCount} keys &bull; ${answer.rawLength} bytes` : 'Syntax Error'}</span>
           </div>
           <h3 style="font-size: 1.15rem; margin-bottom: 8px;">${escapeHtml(answer.title)}</h3>
@@ -3504,7 +3504,7 @@
       }
     }
 
-    return `<svg width="105" height="105" viewBox="0 0 105 105" fill="#05070a" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="${paths}"/></svg>`;
+    return `<svg width="105" height="105" viewBox="0 0 105 105" fill="#0f1114" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="${paths}"/></svg>`;
   }
 
   function showToast(message, type = 'success') {
@@ -4985,7 +4985,7 @@
       { category: 'Instant Tools', title: 'Diceware Passphrase', desc: 'Memorable high-entropy 4-word Diceware passphrase', icon: '🎲', action: () => { searchInput.value = 'passphrase'; executeSearch('passphrase'); } },
       { category: 'Instant Tools', title: 'JSON Formatter & Validator', desc: 'Validate, format and count keys in JSON strings', icon: '📋', action: () => { searchInput.value = 'json {"status": "secure"}'; searchInput.focus(); } },
       { category: 'Instant Tools', title: 'Base64 Encoder / Decoder', desc: 'Encode or decode base64 strings with zero logs', icon: '🔤', action: () => { searchInput.value = 'base64: '; searchInput.focus(); } },
-      { category: 'Instant Tools', title: 'Color Inspector (Hex to RGB/HSL)', desc: 'Inspect colors and convert between Hex, RGB, HSL', icon: '🎨', action: () => { searchInput.value = '#10b981 to rgb'; executeSearch('#10b981 to rgb'); } },
+      { category: 'Instant Tools', title: 'Color Inspector (Hex to RGB/HSL)', desc: 'Inspect colors and convert between Hex, RGB, HSL', icon: '🎨', action: () => { searchInput.value = '#d2a85a to rgb'; executeSearch('#d2a85a to rgb'); } },
       { category: 'Instant Tools', title: 'URL Encode / Decode', desc: 'Encode or decode URL query parameters', icon: '🔗', action: () => { searchInput.value = 'urlencode '; searchInput.focus(); } },
       { category: 'Instant Tools', title: 'UUID v4 Generator', desc: 'Generate RFC 4122 random UUID string', icon: '🆔', action: () => { searchInput.value = 'uuid'; executeSearch('uuid'); } },
       { category: 'Instant Tools', title: 'SHA-256 Hash Digest', desc: 'Compute cryptographic SHA-256 hash', icon: '🔒', action: () => { searchInput.value = 'sha256: '; searchInput.focus(); } },
@@ -5387,7 +5387,7 @@ ${itemsHtml}
 
         const md = [
           `# 🛡️ Aegis Research Dossier: "${state.currentQuery}"`,
-          `*Retrieved on ${new Date().toLocaleString()} anonymously via Aegis Sovereign Search Engine*\n`,
+          `*Retrieved on ${new Date().toLocaleString()} anonymously via Aegis*\n`,
           `## Executive Summary`,
           `- **Total Results:** ${state.results.length}`,
           `- **Category:** ${state.currentCategory}`,
@@ -5996,7 +5996,7 @@ ${itemsHtml}
       btnToggleDeepResearch.classList.toggle('active', state.deepResearchEnabled);
       btnToggleDeepResearch.setAttribute('aria-pressed', state.deepResearchEnabled ? 'true' : 'false');
       if (state.deepResearchEnabled) {
-        showToast('Perplexity Pro Deep Research Mode Activated! Multi-angle inquiries enabled.', 'info');
+        showToast('Deep research is on. Aegis will search from several angles.', 'info');
         if (searchInput.value.trim()) {
           executeSearch(searchInput.value.trim());
         }
@@ -6017,7 +6017,7 @@ ${itemsHtml}
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg>
           </span>
           <div>
-            <h3 style="margin: 0; font-size: 1.05rem; font-family: var(--font-heading); color: #fbbf24;">Aegis Deep Research Dossier</h3>
+            <h3 style="margin: 0; font-size: 1.05rem; font-family: var(--font-heading); color: #e6c88a;">Aegis Deep Research Dossier</h3>
             <small style="color: var(--text-muted); font-size: 0.74rem;">Autonomous multi-angle inquiry & bracket-cited synthesis</small>
           </div>
         </div>
@@ -6039,7 +6039,7 @@ ${itemsHtml}
         <div class="deep-progress-step" id="deepStep3" title="Cross-Source Synthesis"></div>
         <div class="deep-progress-step" id="deepStep4" title="Dossier Finalization"></div>
       </div>
-      <div id="deepProgressStatus" style="font-size: 0.8rem; color: #fbbf24; margin-bottom: 14px; font-family: var(--font-mono);">Step 1/4: Decomposing inquiry into 4 research vectors...</div>
+      <div id="deepProgressStatus" style="font-size: 0.8rem; color: #e6c88a; margin-bottom: 14px; font-family: var(--font-mono);">Step 1/4: Decomposing inquiry into 4 research vectors...</div>
       <div class="skeleton-card" style="height: 120px;" id="deepSkeleton"></div>
       <div class="deep-dossier-body" id="deepDossierBody" style="display: none;"></div>
     `;
@@ -6091,10 +6091,10 @@ ${itemsHtml}
 
         // Render Markdown safely
         let formatted = escapeHtml(data.dossierMarkdown)
-          .replace(/^# (.*$)/gim, '<h1 style="color: #fbbf24; font-size: 1.4rem; margin: 16px 0 8px;">$1</h1>')
-          .replace(/^## (.*$)/gim, '<h2 style="color: #38bdf8; font-size: 1.15rem; margin: 14px 0 6px; border-bottom: 1px solid rgba(255,255,255,0.08); padding-bottom: 4px;">$1</h2>')
-          .replace(/^### (.*$)/gim, '<h3 style="color: #34d399; font-size: 1rem; margin: 12px 0 4px;">$1</h3>')
-          .replace(/^\> (.*$)/gim, '<blockquote style="border-left: 3px solid #f59e0b; padding-left: 12px; margin: 8px 0; color: var(--text-secondary);">$1</blockquote>')
+          .replace(/^# (.*$)/gim, '<h1 style="color: #e6c88a; font-size: 1.4rem; margin: 16px 0 8px;">$1</h1>')
+          .replace(/^## (.*$)/gim, '<h2 style="color: #9cc6d0; font-size: 1.15rem; margin: 14px 0 6px; border-bottom: 1px solid rgba(255,255,255,0.08); padding-bottom: 4px;">$1</h2>')
+          .replace(/^### (.*$)/gim, '<h3 style="color: #e6c88a; font-size: 1rem; margin: 12px 0 4px;">$1</h3>')
+          .replace(/^\> (.*$)/gim, '<blockquote style="border-left: 3px solid #d2a85a; padding-left: 12px; margin: 8px 0; color: var(--text-secondary);">$1</blockquote>')
           .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
           .replace(/\*(.*?)\*/g, '<em>$1</em>')
           .replace(/\[(\d+)\]/g, '<span class="deep-citation-pill">[$1]</span>')
@@ -6418,7 +6418,7 @@ ${itemsHtml}
         shieldsMasterSwitch.classList.toggle('active', browserState.shields.active);
         if (shieldsStatusBadge) {
           shieldsStatusBadge.textContent = browserState.shields.active ? 'SHIELDS ACTIVE' : 'SHIELDS DISABLED';
-          shieldsStatusBadge.style.color = browserState.shields.active ? '#10b981' : '#ef4444';
+          shieldsStatusBadge.style.color = browserState.shields.active ? '#d2a85a' : '#ef4444';
         }
         showToast(browserState.shields.active ? 'Brave Shields UP for this site' : 'Shields DOWN: Protections disabled');
       });
@@ -6622,13 +6622,13 @@ ${itemsHtml}
           vaultActiveMasterPass = pass;
           const encPayload = await encryptVaultPayload([], pass);
           localStorage.setItem('aegis_keyring_enc', JSON.stringify(encPayload));
-          showToast('New Sovereign Password Keyring Initialized!');
+          showToast('New password keyring created.');
         } else {
           try {
             const payload = JSON.parse(storedRaw);
             vaultKeyringMemory = await decryptVaultPayload(payload, pass);
             vaultActiveMasterPass = pass;
-            showToast('Keyring Decrypted! RAM-Only Sovereign Session active.');
+            showToast('Keyring Decrypted! Keys stay in memory for this session.');
           } catch (err) {
             showToast('Incorrect Master Passphrase! Access Denied.', 'danger');
             return;
