@@ -1,33 +1,38 @@
 <div align="center">
 
-# 🛡️ AEGIS ULTIMATE
-### Sovereign Zero-Telemetry Private Search Engine & Chromium Desktop Browser Suite
+# Aegis Ultimate
+### A private search engine and sandboxed browser that keeps no history
 
-*Sub-5ms BM25 Local Indexing • Isolated Multi-Tab Proxy Browser • Perplexity-Style Cited AI • Autonomous Web Crawler • Google Parity Instant Tools • Dark Web Gateway*
+Meta-search, a local document index, cited AI answers and an isolated multi-tab browser. Everything runs on your machine and nothing is written to disk.
 
 **Engineered by [Zeeshan Saeed](https://github.com/zeeshansaeed6)**
 
 <br/>
 
 [![GitHub Stars](https://img.shields.io/github/stars/zeeshansaeed6/Aegis-Ultimate?style=for-the-badge&color=eab308&logo=star)](https://github.com/zeeshansaeed6/Aegis-Ultimate/stargazers)
-[![GitHub Forks](https://img.shields.io/github/forks/zeeshansaeed6/Aegis-Ultimate?style=for-the-badge&color=6366f1&logo=git)](https://github.com/zeeshansaeed6/Aegis-Ultimate/network)
-[![Author: Zeeshan Saeed](https://img.shields.io/badge/Author-Zeeshan%20Saeed-059669.svg?style=for-the-badge&logo=github)](https://github.com/zeeshansaeed6)
+[![GitHub Forks](https://img.shields.io/github/forks/zeeshansaeed6/Aegis-Ultimate?style=for-the-badge&color=968cc8&logo=git)](https://github.com/zeeshansaeed6/Aegis-Ultimate/network)
+[![Author: Zeeshan Saeed](https://img.shields.io/badge/Author-Zeeshan%20Saeed-b08a3e.svg?style=for-the-badge&logo=github)](https://github.com/zeeshansaeed6)
 [![License: MIT](https://img.shields.io/badge/License-MIT-3b82f6.svg?style=for-the-badge)](LICENSE)
 <br/>
 [![Runtime: Node.js](https://img.shields.io/badge/Node.js-v18%2B%20%7C%20v20%2B-22c55e.svg?style=for-the-badge&logo=node.js)](https://nodejs.org)
 [![Desktop: Electron](https://img.shields.io/badge/Desktop-Electron%20v44-47848F.svg?style=for-the-badge&logo=electron)](https://electronjs.org)
-[![Telemetry: 0% RAM Only](https://img.shields.io/badge/Telemetry-0%25%20Volatile%20RAM-10b981.svg?style=for-the-badge)](#-zero-telemetry-privacy-guarantees)
-[![Test Suite: 10/10 Passing](https://img.shields.io/badge/Tests-87%2F87%20Passing%20(100%25)-emerald.svg?style=for-the-badge)](#-automated-test-suite--quality-assurance)
+[![Telemetry: 0% RAM Only](https://img.shields.io/badge/Telemetry-0%25%20Volatile%20RAM-86b9b1.svg?style=for-the-badge)](#-zero-telemetry-privacy-guarantees)
+[![Test Suite: 10/10 Passing](https://img.shields.io/badge/Tests-87%2F87%20Passing%20(100%25)-d2a85a.svg?style=for-the-badge)](#-automated-test-suite--quality-assurance)
 
 <br/>
 
-[Quick Start](#-quick-start-1-click-launchers) • [Aegis vs. Google](#-aegis-vs-google--conventional-browsers) • [System Architecture](#-system-architecture) • [8 Flagship Pillars](#-the-8-flagship-pillars-of-aegis) • [Keyboard Shortcuts](#-complete-keyboard-shortcuts-cheatsheet) • [Bangs & Tools](#-instant-answers--bang-shortcuts-cheat-sheet) • [API Reference](#-rest-api-reference)
+[Screenshots](#-screenshots) • [Quick Start](#-quick-start-1-click-launchers) • [Aegis vs. Google](#-aegis-vs-google--conventional-browsers) • [System Architecture](#-system-architecture) • [8 Flagship Pillars](#-the-8-flagship-pillars-of-aegis) • [Keyboard Shortcuts](#-complete-keyboard-shortcuts-cheatsheet) • [Bangs & Tools](#-instant-answers--bang-shortcuts-cheat-sheet) • [API Reference](#-rest-api-reference)
+
+<br/>
+
+<img src="docs/screenshots/home.png" alt="Aegis home screen: a large search field under the headline 'Search that doesn't follow you home.'" width="900"/>
 
 ---
 
 </div>
 
 ## 📑 Table of Contents
+- [🖼️ Screenshots](#-screenshots)
 - [👨‍💻 Created & Engineered by Zeeshan Saeed](#-created--engineered-by-zeeshan-saeed)
 - [⚡ Aegis vs. Google & Conventional Browsers](#-aegis-vs-google--conventional-browsers)
 - [🏛️ System Architecture](#-system-architecture)
@@ -51,7 +56,53 @@
 - [📡 REST API Reference](#-rest-api-reference)
 - [📂 Project Directory Layout](#-project-directory-layout)
 - [❓ Frequently Asked Questions (FAQ)](#-frequently-asked-questions-faq)
+- [🎨 Interface & Design Notes](#-interface--design-notes)
 - [🤝 Contributing & License](#-contributing--license)
+
+---
+
+## 🖼️ Screenshots
+
+### Search and results
+The home screen is one large query field. Results are a plain list with no ads, and instant tools such as the calculator answer above the results.
+
+<p align="center">
+  <img src="docs/screenshots/results.png" alt="Results page with category tabs, filters and the instant calculator" width="900"/>
+</p>
+
+### Command palette
+Press `Ctrl+K` to jump to any tool, run a bang, or open a panel without leaving the keyboard.
+
+<p align="center">
+  <img src="docs/screenshots/command-palette.png" alt="Command palette listing the browser, crawler, vault, bookmarks and scratchpad" width="900"/>
+</p>
+
+### Sandboxed browser
+Tabs open in an isolated runtime with trackers and beacons stripped. Tabs are grouped into workspaces, and each tab can be burned in one click.
+
+<p align="center">
+  <img src="docs/screenshots/browser.png" alt="Private browser with workspace tabs, toolbar and a start page of quick links" width="900"/>
+</p>
+
+### Privacy lab and settings
+
+<table>
+  <tr>
+    <td width="50%"><img src="docs/screenshots/privacy-lab.png" alt="Privacy lab showing WebRTC, canvas, referrer and audio fingerprint checks"/></td>
+    <td width="50%"><img src="docs/screenshots/settings.png" alt="Engine settings with AI provider and model fields"/></td>
+  </tr>
+  <tr>
+    <td align="center"><sub>Privacy lab: live fingerprint checks</sub></td>
+    <td align="center"><sub>Settings: AI provider, lenses, domain filter, Tor</sub></td>
+  </tr>
+</table>
+
+### On a phone
+The interface is responsive and installs as a PWA.
+
+<p align="center">
+  <img src="docs/screenshots/mobile.png" alt="Aegis home screen at phone width" width="300"/>
+</p>
 
 ---
 
@@ -504,13 +555,16 @@ Aegis-Ultimate/
 │   └── spamFilter.js          # Anti-spam & SEO content farm filter
 ├── public/
 │   ├── index.html             # Single-page application shell & WebViews
-│   ├── styles.css             # Glassmorphism dark-mode UI & responsive styling
+│   ├── styles.css             # Base component styles
+│   ├── theme.css              # Visual theme layer: tokens, type, surfaces (loaded after styles.css)
 │   ├── app.js                 # Frontend application logic, tabs, hotkeys & controllers
 │   ├── opensearch.xml         # OpenSearch 1.1 browser autodiscovery specification
 │   ├── manifest.webmanifest   # Progressive Web App (PWA) manifest
 │   ├── sw.js                  # Service Worker for offline PWA caching
 │   ├── app-icon.png           # Brand shield iconography
 │   └── brand-logo.png         # High-resolution brand logo
+├── docs/
+│   └── screenshots/           # Images used in this README
 ├── data/
 │   └── native_search_index.json # Persisted index for native crawled pages
 └── test/
@@ -541,6 +595,25 @@ Aegis-Ultimate/
 
 #### Q: Can I use Aegis as my primary browser?
 **A:** Yes. The Electron desktop app includes multi-tab browsing, split-screen side-by-side mode, Arc-style workspaces, download management, Chrome extensions, and full session burning.
+
+---
+
+## 🎨 Interface & Design Notes
+
+The interface was redesigned around a few fixed rules so new panels stay consistent.
+
+| Element | Choice |
+| :--- | :--- |
+| **Surfaces** | Graphite (`#0f1114` page, `#151819` panels) with 1px hairline borders. No glow, blur or gradient fills. |
+| **Accent** | One brass (`#d2a85a`) for the primary action and the current selection. |
+| **Protected state** | A muted teal (`#86b9b1`) used only for "verified" or "protected" indicators. |
+| **Type** | Bricolage Grotesque for headlines, Instrument Sans for text, JetBrains Mono only for code, keys and the query field. |
+| **Results** | An open list separated by hairlines, not a stack of cards. Titles are underlined links. |
+| **Motion** | One fade-and-rise on the home screen at load. Other motion only responds to a click. `prefers-reduced-motion` is respected. |
+
+**Where to change it.** Colours, radii and fonts are CSS variables at the top of [`public/theme.css`](public/theme.css). That file loads after `public/styles.css` and overrides it, so you can restyle the app without touching the component rules. The service worker caches both files, so bump `CACHE_NAME` in `public/sw.js` after changing either one.
+
+**Regenerating the screenshots.** Start the server with `PORT=3939 npm run server`, then capture the views with Playwright at 1360×820 and compress them into `docs/screenshots/`.
 
 ---
 

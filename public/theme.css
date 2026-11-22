@@ -468,3 +468,9 @@ input:focus, select:focus, textarea:focus { border-color: var(--accent-emerald);
   .footer-sep { display: none; }
   .footer-inner { flex-direction: column; gap: 4px; }
 }
+
+/* Emoji in panels and palettes: mute the colour */
+.cmd-item-icon, .cmd-icon, .privacy-lab-icon, .lab-icon, .feature-icon, .privacy-card-icon,
+[class*="cmd-"] [class*="icon"], [class*="lab-"] [class*="icon"] {
+  filter: grayscale(1) brightness(1.15); opacity: .85;
+}
