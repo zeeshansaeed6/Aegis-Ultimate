@@ -1052,7 +1052,7 @@ function renderBotChallengePage({ challenge = {}, targetUrl = '', tabId = '', st
       flex-shrink: 0;
     }
     .meta-val {
-      color: #38bdf8;
+      color: #9cc6d0;
       font-family: ui-monospace, monospace;
       overflow: hidden;
       text-overflow: ellipsis;
@@ -1307,7 +1307,7 @@ function renderHttpErrorPage({
       --border: rgba(255, 255, 255, 0.08);
       --text-main: #f1f5f9;
       --text-muted: #94a3b8;
-      --accent: #10b981;
+      --accent: #d2a85a;
       --danger: #f43f5e;
       --warning: #f59e0b;
     }
@@ -1324,7 +1324,7 @@ function renderHttpErrorPage({
       overflow-x: hidden;
       background-image: 
         radial-gradient(ellipse 60% 40% at 50% 0%, rgba(244, 63, 94, 0.08) 0%, transparent 80%),
-        radial-gradient(circle at 10% 20%, rgba(16, 185, 129, 0.04) 0%, transparent 40%);
+        radial-gradient(circle at 10% 20%, rgba(210, 168, 90, 0.04) 0%, transparent 40%);
     }
     .error-card {
       background: var(--card-bg);
@@ -1389,7 +1389,7 @@ function renderHttpErrorPage({
       padding: 8px 14px;
       font-family: monospace;
       font-size: 0.84rem;
-      color: #38bdf8;
+      color: #9cc6d0;
       max-width: 100%;
       overflow: hidden;
       text-overflow: ellipsis;
@@ -1412,10 +1412,10 @@ function renderHttpErrorPage({
       padding-top: 14px;
       border-top: 1px dashed rgba(255, 255, 255, 0.08);
       font-size: 0.85rem;
-      color: #10b981;
+      color: #d2a85a;
     }
     .tip-box a {
-      color: #34d399;
+      color: #e6c88a;
       text-decoration: underline;
       font-weight: 600;
     }
@@ -1440,11 +1440,11 @@ function renderHttpErrorPage({
       text-decoration: none;
     }
     .btn-action.primary {
-      background: #10b981;
+      background: #d2a85a;
       color: #020305;
     }
     .btn-action.primary:hover {
-      background: #059669;
+      background: #b08a3e;
     }
     .btn-action.secondary {
       background: rgba(255, 255, 255, 0.06);
@@ -1705,7 +1705,7 @@ async function handleBrowserProxy(req, res) {
             font-family: ui-monospace, monospace;
             background: #000000;
             border: 1px solid #1e293b;
-            color: #38bdf8;
+            color: #9cc6d0;
             padding: 4px 10px;
             border-radius: 6px;
             font-size: 0.85rem;
@@ -1717,7 +1717,7 @@ async function handleBrowserProxy(req, res) {
             margin-top: 24px;
           }
           .btn-primary-action {
-            background: linear-gradient(135deg, #10b981, #059669);
+            background: linear-gradient(135deg, #d2a85a, #b08a3e);
             color: #041209;
             font-weight: 600;
             font-size: 0.92rem;
@@ -1734,7 +1734,7 @@ async function handleBrowserProxy(req, res) {
           }
           .btn-primary-action:hover {
             transform: translateY(-1px);
-            box-shadow: 0 4px 16px rgba(16, 185, 129, 0.4);
+            box-shadow: 0 4px 16px rgba(210, 168, 90, 0.4);
           }
           .btn-secondary-action {
             background: rgba(255, 255, 255, 0.05);
@@ -1775,8 +1775,8 @@ async function handleBrowserProxy(req, res) {
             outline: none;
           }
           .quick-search-input:focus {
-            border-color: #10b981;
-            box-shadow: 0 0 10px rgba(16, 185, 129, 0.25);
+            border-color: #d2a85a;
+            box-shadow: 0 0 10px rgba(210, 168, 90, 0.25);
           }
           .footer-note {
             margin-top: 18px;
@@ -2129,7 +2129,7 @@ async function handleBrowserProxy(req, res) {
         <title>Page Load Failed | Aegis Browser</title>
         <style>
           body {
-            background: #05070a;
+            background: #0f1114;
             color: #e2e8f0;
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
             display: flex;
@@ -2158,13 +2158,13 @@ async function handleBrowserProxy(req, res) {
             background: #000;
             padding: 8px 12px;
             border-radius: 6px;
-            color: #38bdf8;
+            color: #9cc6d0;
             font-size: 0.8rem;
             word-break: break-all;
             margin-bottom: 20px;
           }
           .btn {
-            background: #10b981;
+            background: #d2a85a;
             color: #050a07;
             border: none;
             padding: 10px 20px;
@@ -2174,7 +2174,7 @@ async function handleBrowserProxy(req, res) {
             text-decoration: none;
             display: inline-block;
           }
-          .btn:hover { background: #059669; }
+          .btn:hover { background: #b08a3e; }
         </style>
       </head>
       <body>

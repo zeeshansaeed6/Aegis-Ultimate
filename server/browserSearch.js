@@ -286,7 +286,7 @@ async function handleBrowserSearch(req, res) {
       align-items: center;
       gap: 8px;
       text-decoration: none;
-      color: #10b981;
+      color: #d2a85a;
       font-weight: 700;
       font-size: 1.1rem;
       letter-spacing: -0.02em;
@@ -308,8 +308,8 @@ async function handleBrowserSearch(req, res) {
       transition: all 0.2s;
     }
     .search-input-form:focus-within {
-      border-color: #10b981;
-      box-shadow: 0 0 14px rgba(16, 185, 129, 0.25);
+      border-color: #d2a85a;
+      box-shadow: 0 0 14px rgba(210, 168, 90, 0.25);
     }
     .search-field {
       flex: 1;
@@ -323,7 +323,7 @@ async function handleBrowserSearch(req, res) {
     .search-btn {
       background: transparent;
       border: none;
-      color: #10b981;
+      color: #d2a85a;
       cursor: pointer;
       display: flex;
       align-items: center;
@@ -359,8 +359,8 @@ async function handleBrowserSearch(req, res) {
       background: rgba(255, 255, 255, 0.05);
     }
     .cat-link.active {
-      color: #10b981;
-      background: rgba(16, 185, 129, 0.12);
+      color: #d2a85a;
+      background: rgba(210, 168, 90, 0.12);
       font-weight: 600;
     }
 
@@ -382,8 +382,8 @@ async function handleBrowserSearch(req, res) {
 
     /* Instant Answer Card */
     .instant-answer-card {
-      background: rgba(16, 185, 129, 0.06);
-      border: 1px solid rgba(16, 185, 129, 0.25);
+      background: rgba(210, 168, 90, 0.06);
+      border: 1px solid rgba(210, 168, 90, 0.25);
       border-radius: 12px;
       padding: 20px;
       margin-bottom: 28px;
@@ -395,8 +395,8 @@ async function handleBrowserSearch(req, res) {
       font-weight: 600;
       text-transform: uppercase;
       letter-spacing: 0.05em;
-      color: #34d399;
-      background: rgba(16, 185, 129, 0.15);
+      color: #e6c88a;
+      background: rgba(210, 168, 90, 0.15);
       padding: 3px 8px;
       border-radius: 4px;
       margin-bottom: 10px;
@@ -426,7 +426,7 @@ async function handleBrowserSearch(req, res) {
       border: 1px solid rgba(255, 255, 255, 0.1);
       font-family: ui-monospace, monospace;
       font-size: 0.88rem;
-      color: #38bdf8;
+      color: #9cc6d0;
       overflow-x: auto;
       margin: 10px 0;
     }
@@ -469,8 +469,8 @@ async function handleBrowserSearch(req, res) {
       color: #cbd5e1;
     }
     .meta-badge {
-      background: rgba(16, 185, 129, 0.1);
-      color: #34d399;
+      background: rgba(210, 168, 90, 0.1);
+      color: #e6c88a;
       padding: 2px 6px;
       border-radius: 4px;
     }
@@ -481,7 +481,7 @@ async function handleBrowserSearch(req, res) {
       margin: 0;
     }
     .entry-link {
-      color: #38bdf8;
+      color: #9cc6d0;
       text-decoration: none;
       transition: color 0.15s;
     }
@@ -514,8 +514,8 @@ async function handleBrowserSearch(req, res) {
       transition: all 0.15s;
     }
     .action-btn:hover {
-      background: rgba(16, 185, 129, 0.15);
-      border-color: rgba(16, 185, 129, 0.3);
+      background: rgba(210, 168, 90, 0.15);
+      border-color: rgba(210, 168, 90, 0.3);
       color: #ffffff;
     }
 
@@ -538,11 +538,11 @@ async function handleBrowserSearch(req, res) {
     .image-card:hover {
       transform: translateY(-2px);
       box-shadow: 0 8px 24px rgba(0, 0, 0, 0.6);
-      border-color: #10b981;
+      border-color: #d2a85a;
     }
     .image-card.active {
-      border-color: #10b981;
-      box-shadow: 0 0 14px rgba(16, 185, 129, 0.4);
+      border-color: #d2a85a;
+      box-shadow: 0 0 14px rgba(210, 168, 90, 0.4);
     }
     .image-card img {
       width: 100%;
@@ -613,7 +613,7 @@ async function handleBrowserSearch(req, res) {
     }
     .theater-domain {
       font-size: 0.75rem;
-      color: #10b981;
+      color: #d2a85a;
       font-weight: 600;
       text-transform: uppercase;
       letter-spacing: 0.05em;
@@ -692,8 +692,8 @@ async function handleBrowserSearch(req, res) {
       transition: all 0.15s;
     }
     .theater-nav-arrow:hover {
-      background: rgba(16, 185, 129, 0.9);
-      border-color: #10b981;
+      background: rgba(210, 168, 90, 0.9);
+      border-color: #d2a85a;
       transform: translateY(-50%) scale(1.1);
     }
     .theater-prev { left: 16px; }
@@ -727,14 +727,14 @@ async function handleBrowserSearch(req, res) {
       border-color: rgba(255, 255, 255, 0.25);
     }
     .theater-action-btn.primary {
-      background: #10b981;
-      border-color: #10b981;
+      background: #d2a85a;
+      border-color: #d2a85a;
       color: #ffffff;
       font-weight: 600;
     }
     .theater-action-btn.primary:hover {
-      background: #059669;
-      box-shadow: 0 0 16px rgba(16, 185, 129, 0.4);
+      background: #b08a3e;
+      box-shadow: 0 0 16px rgba(210, 168, 90, 0.4);
     }
 
     /* Videos Grid */
@@ -754,7 +754,7 @@ async function handleBrowserSearch(req, res) {
     }
     .video-card:hover {
       transform: translateY(-2px);
-      border-color: #10b981;
+      border-color: #d2a85a;
     }
     .video-thumb-wrap {
       position: relative;
@@ -809,7 +809,7 @@ async function handleBrowserSearch(req, res) {
     .bang-pill {
       background: rgba(255, 255, 255, 0.05);
       border: 1px solid rgba(255, 255, 255, 0.1);
-      color: #38bdf8;
+      color: #9cc6d0;
       font-size: 0.82rem;
       padding: 6px 12px;
       border-radius: 9999px;
@@ -818,7 +818,7 @@ async function handleBrowserSearch(req, res) {
     }
     .bang-pill:hover {
       background: rgba(56, 189, 248, 0.15);
-      border-color: #38bdf8;
+      border-color: #9cc6d0;
     }
   </style>
 </head>

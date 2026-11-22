@@ -3,11 +3,12 @@
  * Ensures fast asset caching and standalone desktop app installability
  */
 
-const CACHE_NAME = 'aegis-cache-v1';
+const CACHE_NAME = 'aegis-cache-v2';
 const STATIC_ASSETS = [
   '/',
   '/index.html',
   '/styles.css',
+  '/theme.css',
   '/app.js',
   '/manifest.webmanifest'
 ];
